@@ -34,17 +34,14 @@
                 </b-form-group>
                 <b-button type="submit" variant="secondary">Log In</b-button>
             </b-form>
-            <b-alert show variant="success" v-if="loggedin" p-5>Inicio de de sesión exitosa.</b-alert>
-            
+            <b-alert show variant="success" v-if="loggedin">Inicio de de sesión exitosa.</b-alert>
+            <b-alert show variant="danger" v-if="not_loggedin">Email o contraseña incorrectos.</b-alert>
                 <template #footer>
                     <small class="text-muted">¿Aún no tienes cuenta? Resgístrate 
                       <b-link to="/signin">aquí</b-link>.
                     </small>
                 </template>
             </b-card>
-            <!-- <b-card class="mt-3" header="Form Data Result">
-                <pre class="m-0">{{ form }}</pre>
-            </b-card> -->
         </b-container>
     </div>
 </template>
@@ -59,7 +56,8 @@
             password: ''
         },
         show: true, 
-        loggedin: false
+        loggedin: false,
+        not_loggedin: false
       }
     },
     methods: {
@@ -72,12 +70,17 @@
         };
         axios.post('http://localhost:8080/users/loggin',json).then(
           data => {
-            if(data){
-              console.log('Logged in!');
+              var jwt = JSON.parse(atob(data.data.jwt.split(".")[1]));
+              this.not_loggedin = false;
               this.loggedin = true;
-            }else{
-              console.log('Email or password incorrect');
-            }
+              localStorage.setItem('token', data.data.jwt);
+              localStorage.setItem('user_name', jwt.sub);
+          }
+        ).catch(
+          error =>{
+            this.loggedin = false;
+            this.not_loggedin = true;
+            console.log(error);
           }
         )
         // Reset our form values
