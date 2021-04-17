@@ -73,8 +73,8 @@
               var jwt = JSON.parse(atob(data.data.jwt.split(".")[1]));
               this.not_loggedin = false;
               this.loggedin = true;
-              console.log(data);
-              console.log(jwt);
+              localStorage.setItem('token', data.data.jwt);
+              localStorage.setItem('user_name', jwt.sub);
           }
         ).catch(
           error =>{
