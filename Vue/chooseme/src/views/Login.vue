@@ -36,7 +36,6 @@
             </b-form>
             <b-alert show variant="success" v-if="loggedin">Inicio de de sesión exitosa.</b-alert>
             <b-alert show variant="danger" v-if="not_loggedin">Email o contraseña incorrectos.</b-alert>
-            
                 <template #footer>
                     <small class="text-muted">¿Aún no tienes cuenta? Resgístrate 
                       <b-link to="/signin">aquí</b-link>.
