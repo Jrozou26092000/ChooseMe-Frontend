@@ -70,13 +70,17 @@
         };
         axios.post('http://localhost:8080/users/loggin',json).then(
           data => {
-            if(data.data){
+              var jwt = JSON.parse(atob(data.data.jwt.split(".")[1]));
               this.not_loggedin = false;
               this.loggedin = true;
-            }else{
-              this.loggedin = false;
-              this.not_loggedin = true;
-            }
+              console.log(data);
+              console.log(jwt);
+          }
+        ).catch(
+          error =>{
+            this.loggedin = false;
+            this.not_loggedin = true;
+            console.log(error);
           }
         )
         // Reset our form values
