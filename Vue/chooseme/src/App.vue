@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-      <top-header></top-header>
+      <!-- <top-header /> -->
     <router-view />
   </div>
 </template>
 
 <script>
-import TopHeader from "@/components/TopHeader.vue";
+/* import TopHeader from "@/components/TopHeader.vue";
   export default {
     components: {
       "top-header": TopHeader
     }
-  }
+  } */
 </script>
 
 <style lang="scss">

@@ -1,5 +1,6 @@
 <template>
     <div class="signin">
+        <top-header usuario="usuario" opcion1="Login" opcion2="Sign In"></top-header>
         <b-container>
             <b-card 
                 header="Bienvenidos a ChooseMe!"
@@ -127,6 +128,8 @@
 
 <script>
   import axios from 'axios';
+  import TopHeader from '../components/TopHeader.vue';
+
   export default {
     data() {
       return {
@@ -174,6 +177,7 @@
           this.show = true
         })
       }
-    }
+    },
+    components: {"top-header": TopHeader} 
   }
 </script>
