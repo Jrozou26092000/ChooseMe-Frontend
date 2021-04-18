@@ -35,8 +35,7 @@
                 </b-form-group>
                 <b-button type="submit" variant="secondary">Log In</b-button>
             </b-form>
-            <b-alert show variant="success" v-if="loggedin">Inicio de de sesión exitosa.</b-alert>
-            <b-alert show variant="danger" v-if="not_loggedin">Email o contraseña incorrectos.</b-alert>
+            <b-alert show variant="danger" v-if="not_loggedin" class="mt-3">Email o contraseña incorrectos.</b-alert>
                 <template #footer>
                     <small class="text-muted">¿Aún no tienes cuenta? Resgístrate 
                       <b-link to="/signin">aquí</b-link>.
@@ -58,8 +57,7 @@
             email: '',
             password: ''
         },
-        show: true, 
-        loggedin: false,
+        show: true,
         not_loggedin: false
       }
     },
@@ -75,7 +73,6 @@
           data => {
               var jwt = JSON.parse(atob(data.data.jwt.split(".")[1]));
               this.not_loggedin = false;
-              this.loggedin = true;
               localStorage.setItem('token', data.data.jwt);
               localStorage.setItem('user_name', jwt.sub);
               this.$router.push('/home_logged');
