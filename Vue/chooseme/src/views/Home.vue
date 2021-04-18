@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <top-header usuario="usuario" :logged="logged"></top-header>
+    <top-header usuario="Usuario" :logged="logged"></top-header>
     <h1>This is a home page</h1>
   </div>
 </template>
