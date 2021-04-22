@@ -1,5 +1,5 @@
 <template>
-  <div class="profile" >
+  <div class="profile" style="margin-top: 70px">
     <b-card no-body class="m-5" align="left">
       <b-tabs pills card vertical nav-wrapper-class="w-25" style="height: 500px;">
         <b-tab title="Cuenta" active>
