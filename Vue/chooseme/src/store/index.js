@@ -4,7 +4,12 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    products: [],
+    logged: false,
+    user: 'Usuario',
+    tab: 'rulet'
+  },
   mutations: {},
   actions: {},
   modules: {},

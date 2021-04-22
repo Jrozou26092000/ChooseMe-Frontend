@@ -1,7 +1,6 @@
 <template>
     <div class="login">
-      <top-header usuario="usuario" opcion1="Login" opcion2="Sign In"></top-header>
-        <b-container>
+        <b-container style="margin-top: 70px">
             <b-card 
                 header="Bienvenidos a ChooseMe!"
                 header-bg-variant="dark"
@@ -21,7 +20,8 @@
                     type="email"
                     placeholder="Ingrese su correo electrónico"
                     required
-                    ></b-form-input>
+                    >
+                    </b-form-input>
                 </b-form-group>
 
                 <b-form-group id="input-group-2" label="Contraseña:" label-for="input-2">
@@ -48,7 +48,6 @@
 
 <script>
   import axios from 'axios';
-  import TopHeader from '../components/TopHeader.vue';
 
   export default {
     data() {
@@ -75,7 +74,10 @@
               this.not_loggedin = false;
               localStorage.setItem('token', data.data.jwt);
               localStorage.setItem('user_name', jwt.sub);
-              this.$router.push('/home_logged');
+              // this.$router.push('/home_logged');
+              this.$store.state.user = jwt.sub;
+              this.$store.state.logged = true;
+               this.$store.state.tab = 'rulet';
           }
         ).catch(
           error =>{
@@ -93,7 +95,6 @@
           this.show = true
         })
       }
-    },
-    components: {"top-header": TopHeader} 
+    }
   }
 </script>
