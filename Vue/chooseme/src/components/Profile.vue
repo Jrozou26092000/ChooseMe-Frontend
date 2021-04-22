@@ -60,7 +60,64 @@
             {{mensaje}}
           </b-alert>
         </b-tab>
-        <b-tab title="Desactivar mi cuenta"><b-card-text>Tab contents 2</b-card-text></b-tab>
+        <b-tab title="Desactivar mi cuenta">
+          <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+            <b-form-group
+              id="input-group-1"
+              label="Contraseña:"
+              label-for="input-1"
+              description="Recordatorio: Choose Me jamás te pedirá tus credenciales por fuera de la página."
+            >
+              <b-form-input
+                id="input-1"
+                v-model="form.passwordDesact"
+                type="password"
+                placeholder="Introduce tu contraseña"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group 
+              id="input-group-2" 
+              label="Por favor verifica tu contraseña:" 
+              label-for="input-2"
+            >
+              <b-form-input
+                id="input-2"
+                v-model="form.passwordDesactAgain"
+                type="password"
+                placeholder="Introduce nuevamente tu contraseña"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-group-3" label="¿Por qué quieres desactivar tu cuenta?:" label-for="input-3">
+              <b-form-select
+                id="input-3"
+                v-model="form.OptionsDesact"
+                :options="Optionsdesacts"
+                required
+              ></b-form-select>
+            </b-form-group>
+
+            <br>
+
+            <b-form-checkbox
+              id="checkbox-1"
+              v-model="status"
+              name="checkbox-1"
+              value="accepted"
+              unchecked-value="not_accepted"
+            >
+              Confirmación de desactivación de cuenta, te extrañaremos :(
+            </b-form-checkbox>
+
+            <br><br>
+
+            <b-button class="mr-3" type="submit" variant="primary">Aceptar</b-button>
+            <b-button type="reset" variant="danger">Reset</b-button>
+          </b-form>
+        </b-tab>
         <b-tab title="Más opciones"><b-card-text>Tab contents 3</b-card-text></b-tab>
       </b-tabs>
     </b-card>
@@ -80,7 +137,21 @@
         correo: "",
         pass: "",
         error: false,
-        mensaje: ""
+        mensaje: "",
+
+        //Datos de desactivación de cuenta
+        form: {
+          passwordDesact: '',
+          passwordDesactAgain: '',
+          OptionsDesact: null
+        },
+        Optionsdesacts: [{ text: 'Cuéntanos, ¿por qué te vas?', value: null }, 
+                          'Encontré una página mejor', 
+                          'Me voy porque tú quieres que me vaya', 
+                          'Cómo es, cómo sería',
+                          'Kelly pero qué mondá!'],
+        show: true
+
       }
     },
     mounted(){
@@ -91,6 +162,7 @@
       this.telefono = "123456789";
       this.correo = "juanr@prk.uv";
     },
+
     methods: {
       save() {
         if(this.pass == ""){
@@ -102,6 +174,24 @@
         } /*else {
           AQUI VA LO DE MANDAR LA SOLICITUD DE CAMBIO.
         }*/
+      },
+
+      //Métodos para desactivación de cuenta
+      onSubmit(event) {
+        event.preventDefault()
+        alert(JSON.stringify(this.form))
+      },
+      onReset(event) {
+        event.preventDefault()
+        // Reset our form values
+        this.form.passwordDesact = ''
+        this.form.passwordDesactAgain = ''
+        this.form.OptionsDesact = null
+        // Trick to reset/clear native browser form validation state
+        this.show = false
+        this.$nextTick(() => {
+          this.show = true
+        })
       }
     }
   }
