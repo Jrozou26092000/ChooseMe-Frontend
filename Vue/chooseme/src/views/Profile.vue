@@ -35,12 +35,12 @@
                 <b-form-input v-model= "nueva_pass_conf" type="password" id="new_password_conf"></b-form-input>
               </b-col>
             </b-row>
-            <b-row class="pb-3">
+           <!--  <b-row class="pb-3">
               <b-col>
                 <label for="email">Email:</label>
                 <b-form-input v-model= "correo" id="email"></b-form-input>
               </b-col>
-            </b-row>
+            </b-row> -->
             <b-row class="pt-4">
               <b-col>
                 <b-form-input v-model= "pass" type="password" placeholder="Digita tu contraseña actual"></b-form-input>
@@ -136,11 +136,11 @@
         telefono:"",
         nueva_pass: "",
         nueva_pass_conf: "",
-        correo: "",
+        //correo: "",
         pass: "",
         error: false,
         mensaje: "",
-
+        user: "",
         //Datos de desactivación de cuenta
         form: {
           passwordDesact: '',
@@ -156,44 +156,59 @@
 
       }
     },
-    mounted(){
+    async mounted(){
       // Se hace la solicitud al back para que nos den los datos.
-      this.nombre = "Juan Esteban";
-      this.apellido = "Rozo Urbina";
-      this.nombre_usuario = "juanrozou";
-      this.telefono = "123456789";
-      this.correo = "juanr@prk.uv";
+      try {
+            const response = await axios.post('http://localhost:8080/users/perfil',{},
+            {headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}}
+            );
+            this.user = response.data;
+            //this.$store.state.tab = 'rulet';
+        } catch (error) {
+            console.log(error);
+        }
+      this.nombre = this.user.name;
+      this.apellido = this.user.lastname;
+      this.nombre_usuario = this.user.user_name;
+      // this.telefono = this.user.phone;
+      // this.correo = this.user.email;
     },
 
     methods: {
-      save() {
+      async save() {
         if(this.pass == ""){
           this.mensaje = "Por favor ingresa tu contraseña actual."
           this.error = true;
         }else if(this.nueva_pass != this.nueva_pass_conf){
           this.mensaje = "La nueva contraseña no coincide."
           this.error = true;
-        } /*else {
-          AQUI VA LO DE MANDAR LA SOLICITUD DE CAMBIO.
-        }*/
+        } else {
+          try {
+            const response = await axios.post('http://localhost:8080/users/update',
+            {
+              "user_id": this.user.user_id,
+              "user_name" : this.nombre_usuario,
+              "password" : this.pass,
+              "passtemp" : this.nueva_pass,
+              "active" : this.user.active,
+              "name" : this.nombre,
+              "lastname" : this.apellido,
+              "points" : this.user.points
+            },
+            {headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}}
+            );
+            console.log(response);
+            //this.$store.state.tab = 'rulet';
+          } catch (error) {
+            console.log(error);
+          }
+        }
       },
 
       //Métodos para desactivación de cuenta
       async onSubmit(event) {
         event.preventDefault();
-        /* let json = {
-          "password": this.form.passwordDesact 
-        }; */
         if(this.form.passwordDesactAgain === this.form.passwordDesact){
-          /* axios.post('http://localhost:8080/users/desactivate',json,{headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}}).then(
-          data => {
-              console.log(data); // CAMBIAR ESTO!!!!
-          }
-          ).catch(
-            error =>{
-              console.log(error);
-            }
-          ) */
           try {
             const response = await axios.post('http://localhost:8080/users/desactivate',{
               "password": this.form.passwordDesact 

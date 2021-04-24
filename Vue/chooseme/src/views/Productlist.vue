@@ -1,12 +1,12 @@
 <template>
     <div class="productlist">
-        <top-header @header_message = "option = $event" ></top-header>
-        <b-container class="mt-5" fluid="sm">
+        <top-header @header_message = "option = $event" class="mb-5"></top-header>
+        <b-container fluid="sm" class="mb-5">
             <b-row>
-                <b-col cols="4">
-                    <b-card class="mt-5" style="width: 90%;">
+                <b-col cols="4" class="mt-5">
+                    <b-card style="width: 90%;">
                         <b-card-text>
-                            HOLAAAAAAAAA
+                            Filtros de búsqueda.
                         </b-card-text>
                     </b-card>
                 </b-col>
@@ -24,45 +24,42 @@
                         </b-col>
                         <b-col md="6">
                             <b-card-body :title="product.name">
-                            <b-card-text>
-                                Descripción del producto.
-                            </b-card-text>
+                                <b-list-group flush>
+                                    <b-list-group-item><b>Marca:</b> {{product.brand}}</b-list-group-item>
+                                    <b-list-group-item><b>Precio:</b> {{product.price}}</b-list-group-item>
+                                    <b-list-group-item> <b>Fecha de creación:</b> {{product.created_at.substring(0,10)}}</b-list-group-item>
+                                    <b-list-group-item> 
+                                        <b-form-rating size="sm" disabled value="product.score"></b-form-rating>
+                                    </b-list-group-item>
+                                </b-list-group>
+                                <!-- <b-button h-ref="#" @click="product_description(product)" variant="dark">Ver producto</b-button> -->
+                                <!-- <b-button  @click="product_description(product)" v-b-toggle.sidebar-footer>Ver producto</b-button> -->
+                                <b-button @click="product_description(product)" v-b-toggle.sidebar-backdrop>Ver producto</b-button>
                             </b-card-body>
                         </b-col>
                         </b-row>
                     </b-card>
                 </b-col>
-                <!-- <b-col>
-                    <b-card 
-                        :title= "product" 
-                        img-src="@/assets/Car_img1.jpg" 
-                        img-alt="Image" 
-                        img-top 
-                        class="mt-5"
-                        style = "max-width:20rem"
-                        v-for= "(product,index) in $store.state.products" 
-                        :key= "index"
-                    >
-                        <b-card-text>
-                        Descripción, datos del producto.
-                        </b-card-text>
-                        <template #footer>
-                            <b-form-rating value="2.75" disabled></b-form-rating>
-                        </template>
-                    </b-card>
-                </b-col> -->
             </b-row>
+            <side-bar></side-bar>
         </b-container>
     </div>
 </template>
 
 <script>
 import TopHeader from '../components/TopHeader';
+import Sidebar from '../components/Sidebar';
 
 export default({
     props: ['products'],
     components: {
-      "top-header": TopHeader
+      "top-header": TopHeader,
+      "side-bar": Sidebar
+    },
+    methods: {
+        product_description(product) {
+            this.$store.state.product = product;
+        }
     }
 })
 </script>
