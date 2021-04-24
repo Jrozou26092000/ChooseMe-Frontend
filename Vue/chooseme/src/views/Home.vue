@@ -1,6 +1,6 @@
 <template>
   <div class="home" :key="$store.state.logged">
-    <top-header @header_message = "option = $event" ></top-header>
+    <top-header @header_message = "option = $event" class="mb-5"></top-header>
     <component v-bind:is="$store.state.tab" ></component>
     <foot />
   </div>

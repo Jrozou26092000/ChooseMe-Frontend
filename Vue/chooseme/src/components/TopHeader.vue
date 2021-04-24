@@ -34,10 +34,16 @@ export default{
         }
     },
     methods: {
-        Logout() {
+        async Logout() {
+             try {
+                const response = await axios.post('http://localhost:8080/users/out',{},
+                {headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}});
+                console.log(response);
+            } catch (error) {
+                console.log(error);
+            }
             this.$store.state.logged = false;
             this.$store.state.user = "Usuario";
-            //this.$store.state.tab = 'rulet';
             localStorage.clear();
             this.$router.push('/').catch(()=>{});
             window.scrollTo(0, 0);
@@ -48,29 +54,14 @@ export default{
         },
         async search(){
             if (this.product != ''){
-                /* let json = {
-                    "name": this.product
-                };
-                axios.post('http://localhost:8080/products/search',json).then(
-                data => {
-                    this.$store.state.products = data.data;
-                    console.log(this.$store.state.products);
-                }
-                ).catch(
-                    error =>{
-                    console.log(error);
-                    }
-                ) */
                 try {
                     const response = await axios.post('http://localhost:8080/products/search',{
-                        "name": this.product
+                        "category": this.product
                     });
                     this.$store.state.products = response.data;
                 } catch (error) {
                     console.log(error);
                 }
-                //this.$store.state.tab = 'product';
-                //window.scrollTo(0, 0);
                 this.$router.push('/productlist').catch(()=>{});
                 window.scrollTo(0, 0);
                 this.product = ''
