@@ -32,8 +32,6 @@
                                         <b-form-rating size="sm" disabled value="product.score"></b-form-rating>
                                     </b-list-group-item>
                                 </b-list-group>
-                                <!-- <b-button h-ref="#" @click="product_description(product)" variant="dark">Ver producto</b-button> -->
-                                <!-- <b-button  @click="product_description(product)" v-b-toggle.sidebar-footer>Ver producto</b-button> -->
                                 <b-button @click="product_description(product)" v-b-toggle.sidebar-backdrop>Ver producto</b-button>
                             </b-card-body>
                         </b-col>

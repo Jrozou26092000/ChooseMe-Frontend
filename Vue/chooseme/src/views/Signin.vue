@@ -9,7 +9,7 @@
                 align="center"
             >   
 
-            <b-form @submit="onLogin" v-if="show">
+            <b-form @submit="onSignin" v-if="show">
                 <b-form-group
                     id="input-group-1"
                     label="Nombre de Usuario:"
@@ -112,7 +112,26 @@
                 <b-button type="submit" variant="secondary">Sign in</b-button>
 
             </b-form>
-
+                <b-alert
+                    variant="danger"
+                    dismissible
+                    fade
+                    :show="error"
+                    @dismissed="error = false"
+                    class="mt-3"
+                >
+                    Datos ingresados no válidos.
+                </b-alert>
+                 <b-alert
+                    variant="success"
+                    dismissible
+                    fade
+                    :show="success"
+                    @dismissed="success = false"
+                    class="mt-3"
+                >
+                    Nos da gusto tenerte con nosotros, bienvenido a ChooseMe!
+                </b-alert>
                 <template #footer>
                     <small class="text-muted">¿Ya tienes cuenta? Inicia sesión
                         <b-link to="/login">aquí</b-link>.
@@ -141,27 +160,34 @@
             password: '',
             passwordagain: ''
         },
-        show: true
+        show: true,
+        error: false,
+        success: false
       }
     },
     methods: {
-      onLogin(event) {
+      async onSignin(event) {
         event.preventDefault()
         // API REST
-        let json = {
-            "user_name" : this.form.user,
-            "email" : this.form.email,
-            "password" : this.form.password,
-            "passtemp" : this.form.passwordagain,
-            "name" : this.form.name,
-            "lastname" : this.form.lastname,
-            "phone" : this.form.phone
-        };
-        axios.post('http://localhost:8080/users/add',json).then(
-          data => {
-            console.log(data);
-          }
-        )
+        try {
+            const response = await axios.post('http://localhost:8080/users/add',{
+                "user_name" : this.form.user,
+                "email" : this.form.email,
+                "password" : this.form.password,
+                "passtemp" : this.form.passwordagain,
+                "name" : this.form.name,
+                "lastname" : this.form.lastname,
+                "phone" : this.form.phone
+            });
+            if(response.data){
+                this.success = true;
+            }else{
+                this.error = true;
+            }
+        } catch (error) {
+          this.error = true;
+          console.log(error);
+        }
         // Reset our form values
         this.form.user = ''
         this.form.email = ''

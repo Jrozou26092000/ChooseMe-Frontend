@@ -36,7 +36,16 @@
               </b-form-group>
               <b-button type="submit" variant="secondary">Log In</b-button>
           </b-form>
-          <b-alert show variant="danger" v-if="not_loggedin" class="mt-3">Email o contraseña incorrectos.</b-alert>
+          <b-alert
+            variant="danger"
+            dismissible
+            fade
+            :show="error"
+            @dismissed="error = false"
+            class="mt-3"
+          >
+            Email o contraseña incorrectos.
+          </b-alert>
               <template #footer>
                   <small class="text-muted">¿Aún no tienes cuenta? Resgístrate 
                     <b-link to="/signin">aquí</b-link>.
@@ -59,51 +68,27 @@
             password: ''
         },
         show: true,
-        not_loggedin: false
+        error: false
       }
     },
     methods: {
       async onLogin(event) {
         event.preventDefault()
-        // API REST
-        /* let json = {
-          "email": this.form.email,
-          "password": this.form.password
-          // "active": 1
-        };
-        axios.post('http://localhost:8080/users/loggin',json).then(
-          data => {
-              var jwt = JSON.parse(atob(data.data.jwt.split(".")[1]));
-              this.not_loggedin = false;
-              localStorage.setItem('token', data.data.jwt);
-              localStorage.setItem('user_name', jwt.sub);
-              // this.$router.push('/home_logged');
-              this.$store.state.user = jwt.sub;
-              this.$store.state.logged = true;
-               this.$store.state.tab = 'rulet';
-          }
-        ).catch(
-          error =>{
-            this.loggedin = false;
-            this.not_loggedin = true;
-            console.log(error);
-          }
-        ) */
         try {
             const response = await axios.post('http://localhost:8080/users/loggin',{
               "email": this.form.email,
               "password": this.form.password
             });
             var jwt = JSON.parse(atob(response.data.jwt.split(".")[1]));
-            this.not_loggedin = false;
             localStorage.setItem('token', response.data.jwt);
             localStorage.setItem('user_name', jwt.sub);
             this.$store.state.user = jwt.sub;
+            window.scrollTo(0, 0);
             this.$router.push('/');
             this.$store.state.logged = true;
-            //this.$store.state.tab = 'rulet';
         } catch (error) {
-            console.log(error);
+          this.error = true;
+          console.log(error);
         }
         // Reset our form values
         this.form.email = ''

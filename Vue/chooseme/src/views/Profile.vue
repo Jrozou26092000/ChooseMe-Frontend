@@ -60,6 +60,14 @@
           >
             {{mensaje}}
           </b-alert>
+          <b-alert
+              variant="success"
+              dismissible
+              fade
+              :show="success"
+              @dismissed="success = false"
+              class="mt-3"
+          >{{mensaje}}</b-alert>
         </b-tab>
         <b-tab title="Desactivar mi cuenta">
           <b-form @submit="onSubmit" @reset="onReset" v-if="show">
@@ -117,6 +125,24 @@
             <b-button class="mr-3" type="submit" variant="primary">Aceptar</b-button>
             <b-button type="reset" variant="danger">Reset</b-button>
           </b-form>
+          <b-alert
+            variant="danger"
+            dismissible
+            fade
+            :show="error"
+            @dismissed="error = false"
+            class="mt-3"
+          >
+            {{mensaje}}
+          </b-alert>
+          <b-alert
+              variant="success"
+              dismissible
+              fade
+              :show="success"
+              @dismissed="success = false"
+              class="mt-3"
+          >{{mensaje}}</b-alert>
         </b-tab>
         <b-tab title="Más opciones"><b-card-text>Tab contents 3</b-card-text></b-tab>
       </b-tabs>
@@ -139,6 +165,7 @@
         //correo: "",
         pass: "",
         error: false,
+        success: false,
         mensaje: "",
         user: "",
         //Datos de desactivación de cuenta
@@ -197,10 +224,20 @@
             },
             {headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}}
             );
-            console.log(response);
-            //this.$store.state.tab = 'rulet';
+            if(response.data){
+              this.mensaje = "Tus cambios se han realizado con éxito."
+              this.success = true;
+              this.$store.state.user = this.nombre_usuario;
+              this.pass = '';
+              this.nueva_pass = '';
+              this.nueva_pass_conf = '';
+            }else{
+              this.mensaje = "Datos inválidos, inténtalo de nuevo."
+              this.error = true;
+            }
           } catch (error) {
-            console.log(error);
+            this.mensaje = "Datos inválidos, inténtalo de nuevo."
+            this.error = true;
           }
         }
       },
@@ -213,8 +250,16 @@
             const response = await axios.post('http://localhost:8080/users/desactivate',{
               "password": this.form.passwordDesact 
             },{headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}});
-            console.log(response);
+            if(response.data){
+              this.mensaje = "Te extrañaremos, vuelve pronto :("
+              this.success = true;
+            }else{
+              this.mensaje = "Ups, algo salió mal inténtalo de nuevo."
+              this.error = true;
+            }
           } catch (error) {
+            this.mensaje = "Ups, algo salió mal inténtalo de nuevo."
+            this.error = true;
             console.log(error);
           }
         }else{
