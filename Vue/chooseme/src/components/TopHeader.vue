@@ -64,7 +64,8 @@ export default{
                 }
                 this.$router.push('/productlist').catch(()=>{});
                 window.scrollTo(0, 0);
-                this.product = ''
+                this.$store.state.current_product = this.product;
+                this.product = '';
             }
         },
         gotoHome(){
