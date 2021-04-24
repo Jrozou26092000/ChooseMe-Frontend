@@ -1,6 +1,7 @@
 <template>
     <div class="signin">
-        <b-container style="margin-top: 70px">
+        <top-header @header_message = "option = $event" ></top-header>
+        <b-container style="margin-top: 70px; width: 50%">
             <b-card 
                 header="Bienvenidos a ChooseMe!"
                 header-bg-variant="dark"
@@ -127,7 +128,7 @@
 
 <script>
   import axios from 'axios';
-
+  import TopHeader from '../components/TopHeader';
   export default {
     data() {
       return {
@@ -175,6 +176,9 @@
           this.show = true
         })
       }
-    } 
+    },
+    components: {
+      "top-header": TopHeader
+    }
   }
 </script>

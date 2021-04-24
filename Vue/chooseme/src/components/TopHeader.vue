@@ -26,6 +26,7 @@
 </template>
     
 <script>
+import axios from 'axios';
 export default{
     data(){
         return {
@@ -36,28 +37,59 @@ export default{
         Logout() {
             this.$store.state.logged = false;
             this.$store.state.user = "Usuario";
-            this.$store.state.tab = 'rulet';
+            //this.$store.state.tab = 'rulet';
             localStorage.clear();
+            this.$router.push('/').catch(()=>{});
+            window.scrollTo(0, 0);
         },
         gotoProfile(){
-            this.$store.state.tab = 'profile';
+            //this.$store.state.tab = 'profile';
+            this.$router.push('/profile').catch(()=>{});
         },
-        search(){
+        async search(){
             if (this.product != ''){
-                this.$store.state.products = ['Banano', 'Celular', 'Laptop', 'Mouse', 'Barca', 'Liverpool',this.product];
-                this.$store.state.tab = 'product';
+                /* let json = {
+                    "name": this.product
+                };
+                axios.post('http://localhost:8080/products/search',json).then(
+                data => {
+                    this.$store.state.products = data.data;
+                    console.log(this.$store.state.products);
+                }
+                ).catch(
+                    error =>{
+                    console.log(error);
+                    }
+                ) */
+                try {
+                    const response = await axios.post('http://localhost:8080/products/search',{
+                        "name": this.product
+                    });
+                    this.$store.state.products = response.data;
+                } catch (error) {
+                    console.log(error);
+                }
+                //this.$store.state.tab = 'product';
+                //window.scrollTo(0, 0);
+                this.$router.push('/productlist').catch(()=>{});
+                window.scrollTo(0, 0);
                 this.product = ''
             }
         },
         gotoHome(){
-            this.$store.state.tab = 'rulet';
-            this.product = ''
+            // this.$store.state.tab = 'rulet';
+            this.product = '';
+            // window.scrollTo(0, 0);
+            this.$router.push('/').catch(()=>{});
+            window.scrollTo(0, 0);
         },
         gotoLogin(){
-           this.$store.state.tab = 'login';
+           //this.$store.state.tab = 'login';
+           this.$router.push('login').catch(()=>{});
         },
         gotoSignin(){
-            this.$store.state.tab = 'signin';
+            //this.$store.state.tab = 'signin';
+            this.$router.push('signin').catch(()=>{});
         }
     },
 }

@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="productlist">
+        <top-header @header_message = "option = $event" ></top-header>
         <b-container class="mt-5" fluid="sm">
             <b-row>
                 <b-col cols="4">
@@ -22,7 +23,7 @@
                             <b-card-img src="https://picsum.photos/400/400/?image=20" alt="Image" class="rounded-0"></b-card-img>
                         </b-col>
                         <b-col md="6">
-                            <b-card-body :title="product">
+                            <b-card-body :title="product.name">
                             <b-card-text>
                                 Descripción del producto.
                             </b-card-text>
@@ -56,7 +57,12 @@
 </template>
 
 <script>
+import TopHeader from '../components/TopHeader';
+
 export default({
-    props: ['products']
+    props: ['products'],
+    components: {
+      "top-header": TopHeader
+    }
 })
 </script>

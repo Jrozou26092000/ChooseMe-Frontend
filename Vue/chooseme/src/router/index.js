@@ -9,6 +9,30 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () =>
+    import(/* webpackChunkName: "about" */ "../views/Login.vue"),
+  },
+  {
+    path: "/signin",
+    name: "Signin",
+    component: () =>
+    import(/* webpackChunkName: "about" */ "../views/Signin.vue"),
+  },
+  {
+    path: "/productlist",
+    name: "Productlist",
+    component: () =>
+    import(/* webpackChunkName: "about" */ "../views/Productlist.vue"),
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: () =>
+    import(/* webpackChunkName: "about" */ "../views/Profile.vue"),
   }
 ];
 

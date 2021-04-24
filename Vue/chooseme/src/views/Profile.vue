@@ -1,5 +1,6 @@
 <template>
   <div class="profile" style="margin-top: 70px">
+    <top-header @header_message = "option = $event" ></top-header>
     <b-card no-body class="m-5" align="left">
       <b-tabs pills card vertical nav-wrapper-class="w-25" style="height: 500px;">
         <b-tab title="Cuenta" active>
@@ -104,7 +105,6 @@
 
             <b-form-checkbox
               id="checkbox-1"
-              v-model="status"
               name="checkbox-1"
               value="accepted"
               unchecked-value="not_accepted"
@@ -125,6 +125,8 @@
 </template>
 
 <script>
+  import axios from 'axios';
+  import TopHeader from '../components/TopHeader';
   export default{
     data() {
       return {
@@ -177,9 +179,34 @@
       },
 
       //Métodos para desactivación de cuenta
-      onSubmit(event) {
-        event.preventDefault()
-        alert(JSON.stringify(this.form))
+      async onSubmit(event) {
+        event.preventDefault();
+        /* let json = {
+          "password": this.form.passwordDesact 
+        }; */
+        if(this.form.passwordDesactAgain === this.form.passwordDesact){
+          /* axios.post('http://localhost:8080/users/desactivate',json,{headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}}).then(
+          data => {
+              console.log(data); // CAMBIAR ESTO!!!!
+          }
+          ).catch(
+            error =>{
+              console.log(error);
+            }
+          ) */
+          try {
+            const response = await axios.post('http://localhost:8080/users/desactivate',{
+              "password": this.form.passwordDesact 
+            },{headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}});
+            console.log(response);
+          } catch (error) {
+            console.log(error);
+          }
+        }else{
+          console.log('Las contraseñas no coinciden'); // CAMBIAR ESTO!!!
+        }
+        this.form.passwordDesactAgain = '';
+        this.form.passwordDesact = '';
       },
       onReset(event) {
         event.preventDefault()
@@ -193,6 +220,9 @@
           this.show = true
         })
       }
+    },
+    components: {
+      "top-header": TopHeader
     }
   }
 </script>
