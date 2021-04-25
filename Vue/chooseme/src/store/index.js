@@ -9,7 +9,8 @@ export default new Vuex.Store({
     logged: false,
     user: 'Usuario',
     tab: 'rulet',
-    product: ""
+    product: "",
+    current_product: ""
   },
   mutations: {},
   actions: {},

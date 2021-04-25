@@ -176,9 +176,9 @@
         },
         Optionsdesacts: [{ text: 'Cuéntanos, ¿por qué te vas?', value: null }, 
                           'Encontré una página mejor', 
-                          'Me voy porque tú quieres que me vaya', 
-                          'Cómo es, cómo sería',
-                          'Kelly pero qué mondá!'],
+                          'No deseo seguir calificando productos', 
+                          'La comunidad no es muy colaborativa',
+                          'Solo deseo desactivar mi cuenta'],
         show: true
 
       }
