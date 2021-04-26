@@ -82,10 +82,12 @@
             var jwt = JSON.parse(atob(response.data.jwt.split(".")[1]));
             localStorage.setItem('token', response.data.jwt);
             localStorage.setItem('user_name', jwt.sub);
-            this.$store.state.user = jwt.sub;
+            //this.$store.state.logged = true;
+            //this.$store.state.user = jwt.sub;
+            this.$store.commit("isLogged", true);
+            this.$store.commit("setUsername", jwt.sub);
             window.scrollTo(0, 0);
             this.$router.push('/');
-            this.$store.state.logged = true;
         } catch (error) {
           this.error = true;
           console.log(error);

@@ -36,14 +36,15 @@ export default{
     methods: {
         async Logout() {
              try {
-                const response = await axios.post('http://localhost:8080/users/out',{},
+                await axios.post('http://localhost:8080/users/out',{},
                 {headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}});
-                console.log(response);
             } catch (error) {
                 console.log(error);
             }
-            this.$store.state.logged = false;
-            this.$store.state.user = "Usuario";
+            //this.$store.state.logged = false;
+            //this.$store.state.user = "Usuario";
+            this.$store.commit("isLogged", false);
+            this.$store.commit("setUsername", "Usuario");
             localStorage.clear();
             this.$router.push('/').catch(()=>{});
             window.scrollTo(0, 0);
@@ -58,13 +59,15 @@ export default{
                     const response = await axios.post('http://localhost:8080/products/search',{
                         "name": this.product
                     });
-                    this.$store.state.products = response.data;
+                    //this.$store.state.products = response.data;
+                    this.$store.commit("setProductlist", response.data);
                 } catch (error) {
                     console.log(error);
                 }
                 this.$router.push('/productlist').catch(()=>{});
                 window.scrollTo(0, 0);
-                this.$store.state.current_product = this.product;
+                //this.$store.state.current_product = this.product;
+                this.$store.commit("setProduct", this.product);
                 this.product = '';
             }
         },

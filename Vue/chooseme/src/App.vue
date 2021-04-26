@@ -5,10 +5,15 @@
 </template>
 
 <script>
-/* import Home from "@/views/Home.vue";
-  export default {
-    components: {
-      "home": Home
+ /*  export default {
+    beforeCreate(){
+      if(sessionStorage.getItem("user_name") === null){
+        sessionStorage.setItem("user_name", "Usuario");
+        sessionStorage.setItem("products", []);
+        sessionStorage.setItem("logged", false);
+        sessionStorage.setItem("tab", "rulet");
+        sessionStorage.setItem("product", "");
+      }
     }
   } */
 </script>

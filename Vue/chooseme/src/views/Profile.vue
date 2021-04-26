@@ -227,7 +227,8 @@
             if(response.data != 'false'){
               this.mensaje = "Tus cambios se han realizado con éxito."
               this.success = true;
-              this.$store.state.user = this.nombre_usuario;
+              //this.$store.state.user = this.nombre_usuario;
+              this.$store.commit("setUsername", this.nombre_usuario);
               this.pass = '';
               this.nueva_pass = '';
               this.nueva_pass_conf = '';
