@@ -49,7 +49,7 @@
                                     <b-list-group-item><b>Precio:</b> {{product.price}}</b-list-group-item>
                                     <b-list-group-item> <b>Fecha de creación:</b> {{product.created_at.substring(0,10)}}</b-list-group-item>
                                     <b-list-group-item> 
-                                        <b-form-rating size="sm" disabled value="product.score"></b-form-rating>
+                                        <b-form-rating size="sm" disabled :value= "product.score"></b-form-rating>
                                     </b-list-group-item>
                                 </b-list-group>
                                 <b-button @click="product_description(product)" v-b-toggle.sidebar-backdrop>Ver producto</b-button>
@@ -89,9 +89,9 @@ export default({
             if (this.stars != '' && this.time != ''){
                 try {
                     const response = await axios.post('Direccion que no conozco',{
-                        "category": this.$store.state.current_product,
+                        "name": this.$store.state.current_product,
                         "stars": this.stars,
-                        "time": this.time
+                        "create_at": this.time
                     });
                     this.$store.state.products = response.data;
                 } catch (error) {
@@ -99,19 +99,20 @@ export default({
                 }                
             }else if(this.stars !=''){
                 try {
-                    const response = await axios.post('Direccion que no conozco',{
-                        "category": this.$store.state.current_product,
-                        "stars": this.stars
+                    const response = await axios.post('http://localhost:8080/products/search',{
+                        "name": this.$store.state.current_product,
+                        "stars_puntuation": this.stars
                     });
+                    console.log(response);
                     this.$store.state.products = response.data;
                 } catch (error) {
                     console.log(error);
                 }
             }else if(this.time != ''){
                 try {
-                    const response = await axios.post('Direccion que no conozco',{
-                        "category": this.$store.state.current_product,
-                        "time": this.time
+                    const response = await axios.post('http://localhost:8080/products/search',{
+                        "name": this.$store.state.current_product,
+                        "create_at": this.time
                     });
                     this.$store.state.products = response.data;
                 } catch (error) {

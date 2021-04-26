@@ -224,13 +224,18 @@
             },
             {headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}}
             );
-            if(response.data){
+            if(response.data != 'false'){
               this.mensaje = "Tus cambios se han realizado con éxito."
               this.success = true;
               this.$store.state.user = this.nombre_usuario;
               this.pass = '';
               this.nueva_pass = '';
               this.nueva_pass_conf = '';
+              console.log(response);
+              localStorage.clear();
+              var jwt = JSON.parse(atob(response.data.split(".")[1]));
+              localStorage.setItem('token', response.data);
+              localStorage.setItem('user_name', jwt.sub);
             }else{
               this.mensaje = "Datos inválidos, inténtalo de nuevo."
               this.error = true;

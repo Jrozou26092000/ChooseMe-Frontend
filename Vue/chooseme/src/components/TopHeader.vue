@@ -56,7 +56,7 @@ export default{
             if (this.product != ''){
                 try {
                     const response = await axios.post('http://localhost:8080/products/search',{
-                        "category": this.product
+                        "name": this.product
                     });
                     this.$store.state.products = response.data;
                 } catch (error) {
