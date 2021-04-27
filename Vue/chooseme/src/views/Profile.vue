@@ -20,10 +20,10 @@
                 <label for="user_name">Nombre de usuario:</label>
                 <b-form-input v-model= "nombre_usuario" id="user_name"></b-form-input>
               </b-col>
-              <b-col>
+              <!-- <b-col>
                 <label for="phone">Teléfono:</label>
                 <b-form-input v-model= "telefono" id="phone"></b-form-input>
-              </b-col>
+              </b-col> -->
             </b-row>
             <b-row class="pb-3">
               <b-col>

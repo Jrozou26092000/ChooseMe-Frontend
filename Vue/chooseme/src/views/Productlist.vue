@@ -83,7 +83,8 @@ export default({
     },
     methods: {
         product_description(product) {
-            this.$store.state.product = product;
+            //this.$store.state.product = product;
+            this.$store.commit("setProduct_description", product);
         },
         async onSearch(){
             if (this.stars != '' && this.time != ''){

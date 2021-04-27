@@ -13,7 +13,8 @@ export default new Vuex.Store({
     logged: false,
     user: "Usuario",
     tab: "rulet",
-    product: ""
+    product: "",
+    product_description:""
   },
   mutations: {
     setProductlist(state, products){
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     setProduct(state, product){
       state.product = product
+    },
+    setProduct_description(state, product){
+      state.product_description = product
     }
   },
   actions: {},
