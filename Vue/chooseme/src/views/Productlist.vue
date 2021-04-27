@@ -88,33 +88,44 @@ export default({
         async onSearch(){
             if (this.stars != '' && this.time != ''){
                 try {
-                    const response = await axios.post('Direccion que no conozco',{
-                        "name": this.$store.state.current_product,
-                        "stars": this.stars,
+                    const response = await axios.post('http://localhost:8080/products/search',{
+                        "name": this.$store.state.product,
+                        "stars_puntuation": this.stars,
                         "create_at": this.time
                     });
-                    this.$store.state.products = response.data;
+                    //this.$store.state.products = response.data;
+                    this.$store.commit("setProductlist", response.data);
                 } catch (error) {
                     console.log(error);
                 }                
             }else if(this.stars !=''){
                 try {
                     const response = await axios.post('http://localhost:8080/products/search',{
-                        "name": this.$store.state.current_product,
+                        "name": this.$store.state.product,
                         "stars_puntuation": this.stars
                     });
-                    console.log(response);
-                    this.$store.state.products = response.data;
+                    //this.$store.state.products = response.data;
+                    this.$store.commit("setProductlist", response.data);
                 } catch (error) {
                     console.log(error);
                 }
             }else if(this.time != ''){
                 try {
                     const response = await axios.post('http://localhost:8080/products/search',{
-                        "name": this.$store.state.current_product,
+                        "name": this.$store.state.product,
                         "create_at": this.time
                     });
-                    this.$store.state.products = response.data;
+                    //this.$store.state.products = response.data;
+                    this.$store.commit("setProductlist", response.data);
+                } catch (error) {
+                    console.log(error);
+                }
+            }else{
+                try {
+                    const response = await axios.post('http://localhost:8080/products/search',{
+                        "name": this.$store.state.product
+                    });
+                    this.$store.commit("setProductlist", response.data);
                 } catch (error) {
                     console.log(error);
                 }
