@@ -2,7 +2,7 @@
   <div>
     <b-sidebar
       id="sidebar-backdrop"
-      :title="this.$store.state.product_description.name"
+      :title="this.$store.state.product_description.name.charAt(0).toUpperCase() + this.$store.state.product_description.name.slice(1)"
       backdrop-variant="dark"
       backdrop
       shadow
@@ -16,7 +16,7 @@
       <div class="px-3 py-2">
         <b-img rounded="circle" width="250%" class="mb-3" src="https://picsum.photos/500/500/?image=54" fluid></b-img>
         <p align="justify">
-          <b>Descripción del producto:</b><br>{{this.$store.state.product_description.description}}
+          <b>Descripción del producto:</b><br>{{this.$store.state.product_description.description.charAt(0).toUpperCase() + this.$store.state.product_description.description.slice(1)}}
         </p>
       </div>
     </b-sidebar>

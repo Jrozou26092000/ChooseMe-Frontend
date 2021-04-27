@@ -43,7 +43,7 @@
                             <b-card-img src="https://picsum.photos/400/400/?image=20" alt="Image" class="rounded-0"></b-card-img>
                         </b-col>
                         <b-col md="6">
-                            <b-card-body :title="product.name">
+                            <b-card-body :title="product.name.charAt(0).toUpperCase() + product.name.slice(1)">
                                 <b-list-group flush>
                                     <b-list-group-item><b>Marca:</b> {{product.brand}}</b-list-group-item>
                                     <b-list-group-item><b>Precio:</b> {{product.price}}</b-list-group-item>

@@ -1,6 +1,6 @@
 <template>
   <div class="profile" style="margin-top: 70px">
-    <top-header @header_message = "option = $event" ></top-header>
+    <top-header ref="head" @header_message = "option = $event" ></top-header>
     <b-card no-body class="m-5" align="left">
       <b-tabs pills card vertical nav-wrapper-class="w-25" style="height: 500px;">
         <b-tab title="Cuenta" active>
@@ -255,6 +255,7 @@
             if(response.data){
               this.mensaje = "Te extrañaremos, vuelve pronto :("
               this.success = true;
+              this.$refs.head.Logout();
             }else{
               this.mensaje = "Ups, algo salió mal inténtalo de nuevo."
               this.error = true;
@@ -265,7 +266,8 @@
             console.log(error);
           }
         }else{
-          console.log('Las contraseñas no coinciden'); // CAMBIAR ESTO!!!
+          this.mensaje = "Las contraseñas no coinciden."
+          this.error = true;
         }
         this.form.passwordDesactAgain = '';
         this.form.passwordDesact = '';
