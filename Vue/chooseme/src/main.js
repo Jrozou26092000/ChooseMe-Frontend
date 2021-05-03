@@ -7,6 +7,9 @@ import router from "./router";
 import store from "./store";
 import VueAxios from 'vue-axios';
 import Axios from 'axios';
+import InfiniteLoading from 'vue-infinite-loading';
+
+Vue.use(InfiniteLoading);
 
 Vue.use(VueAxios, Axios);
 
