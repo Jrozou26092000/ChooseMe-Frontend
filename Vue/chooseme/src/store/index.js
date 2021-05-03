@@ -12,9 +12,10 @@ export default new Vuex.Store({
     products: [],
     logged: false,
     user: "Usuario",
-    tab: "rulet",
-    product: "",
-    product_description:""
+    current_product: "",
+    product_search: "",
+    product_reviews: [],
+    page_product_reviews: 0
   },
   mutations: {
     setProductlist(state, products){
@@ -26,16 +27,34 @@ export default new Vuex.Store({
     setUsername(state, user){
       state.user = user
     },
-    setTab(state, tab){
-      state.tab = tab
+    setCurrent_product(state, product){
+      state.current_product = product
     },
-    setProduct(state, product){
-      state.product = product
+    setProduct_search(state, product_search){
+      state.product_search = product_search
     },
-    setProduct_description(state, product){
-      state.product_description = product
+    setProduct_reviews(state, reviews){
+      state.product_reviews.push(reviews);
+    },
+    resetProduct_reviews(state, new_reviews){
+      state.product_reviews = new_reviews
+    },
+    resetPage_product_reviews(state){
+      state.page_product_reviews = 0
+    },
+    incrementPage_product_reviews(state){
+      // CAMBIAR A += 10!!!
+      state.page_product_reviews += 1
     }
   },
   actions: {},
   modules: {},
+  getters: {
+    getPage_product_reviews(state) {
+      return state.page_product_reviews
+    },
+    getCurrent_product(state){
+      return state.current_product
+    }
+  }
 });

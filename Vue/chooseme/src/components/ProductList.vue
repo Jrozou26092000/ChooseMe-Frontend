@@ -1,6 +1,5 @@
 <template>
-    <div class="productlist">
-        <top-header @header_message = "option = $event" class="mb-5"></top-header>
+    <div>
         <b-container fluid="sm" class="mb-5">
             <b-row>
                 <b-col cols="4" class="mt-5">
@@ -52,21 +51,18 @@
                                         <b-form-rating size="sm" disabled :value= "product.score"></b-form-rating>
                                     </b-list-group-item>
                                 </b-list-group>
-                                <b-button @click="product_description(product)" v-b-toggle.sidebar-backdrop>Ver producto</b-button>
+                                <b-button @click="view_product(product)">Ver producto</b-button>
                             </b-card-body>
                         </b-col>
                         </b-row>
                     </b-card>
                 </b-col>
             </b-row>
-            <side-bar></side-bar>
         </b-container>
     </div>
 </template>
 
 <script>
-import TopHeader from '../components/TopHeader';
-import Sidebar from '../components/Sidebar';
 import axios from 'axios';
 
 export default({
@@ -77,24 +73,28 @@ export default({
         }
     },
     props: ['products'],
-    components: {
-      "top-header": TopHeader,
-      "side-bar": Sidebar
-    },
     methods: {
-        product_description(product) {
-            //this.$store.state.product = product;
-            this.$store.commit("setProduct_description", product);
+        async view_product(product) {
+            try {
+                const response = await axios.get('http://localhost:8080/review/' + product.product_id + "/0",{});
+                this.$store.commit("resetProduct_reviews", response.data);
+                this.$store.commit("resetPage_product_reviews");
+                //console.log(this.$store.getters.getProduct_reviews);
+            } catch (error) {
+                 console.log(error);
+            }        
+            this.$store.commit("setCurrent_product", product);
+            window.scrollTo(0, 0);
+            this.$router.push({ path: `/product/${product.name}/${product.product_id}` }).catch(()=>{});
         },
         async onSearch(){
             if (this.stars != '' && this.time != ''){
                 try {
                     const response = await axios.post('http://localhost:8080/products/search',{
-                        "name": this.$store.state.product,
+                        "name": this.$store.state.product_search,
                         "stars_puntuation": this.stars,
                         "create_at": this.time
                     });
-                    //this.$store.state.products = response.data;
                     this.$store.commit("setProductlist", response.data);
                 } catch (error) {
                     console.log(error);
@@ -102,10 +102,9 @@ export default({
             }else if(this.stars !=''){
                 try {
                     const response = await axios.post('http://localhost:8080/products/search',{
-                        "name": this.$store.state.product,
+                        "name": this.$store.state.product_search,
                         "stars_puntuation": this.stars
                     });
-                    //this.$store.state.products = response.data;
                     this.$store.commit("setProductlist", response.data);
                 } catch (error) {
                     console.log(error);
@@ -113,7 +112,7 @@ export default({
             }else if(this.time != ''){
                 try {
                     const response = await axios.post('http://localhost:8080/products/search',{
-                        "name": this.$store.state.product,
+                        "name": this.$store.state.product_search,
                         "create_at": this.time
                     });
                     //this.$store.state.products = response.data;
@@ -124,7 +123,7 @@ export default({
             }else{
                 try {
                     const response = await axios.post('http://localhost:8080/products/search',{
-                        "name": this.$store.state.product
+                        "name": this.$store.state.product_search
                     });
                     this.$store.commit("setProductlist", response.data);
                 } catch (error) {

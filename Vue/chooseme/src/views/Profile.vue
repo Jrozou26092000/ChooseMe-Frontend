@@ -144,7 +144,50 @@
               class="mt-3"
           >{{mensaje}}</b-alert>
         </b-tab>
-        <b-tab title="Más opciones"><b-card-text>Tab contents 3</b-card-text></b-tab>
+        <b-tab title="Eliminar mi cuenta">
+          <b-form>
+            <b-form-group
+              id="delete-1"
+              label="Contraseña:"
+              label-for="delete-1"
+              description="Recordatorio: Una vez elimines tu cuenta no será posible recuperarla, tus datos se
+              borrarán de la aplicación y tus reviews y comentarios quedarán anónimos."
+            >
+              <b-form-input
+                id="delete-1"
+                v-model="delete_pass"
+                type="password"
+                placeholder="Introduce tu contraseña"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group 
+              id="delete-2" 
+              label="Por favor verifica tu contraseña:" 
+              label-for="delete-2"
+            >
+              <b-form-input
+                id="delete-2"
+                v-model="delete_pass_conf"
+                type="password"
+                placeholder="Introduce nuevamente tu contraseña"
+                required
+              ></b-form-input>
+            </b-form-group>
+            <b-button @click="deleteAccount" variant="danger">Eliminar</b-button>
+          </b-form>
+          <b-alert
+            variant="danger"
+            dismissible
+            fade
+            :show="error"
+            @dismissed="error = false"
+            class="mt-3"
+          >
+            {{mensaje}}
+          </b-alert>
+        </b-tab>
       </b-tabs>
     </b-card>
   </div>
@@ -162,7 +205,6 @@
         telefono:"",
         nueva_pass: "",
         nueva_pass_conf: "",
-        //correo: "",
         pass: "",
         error: false,
         success: false,
@@ -179,8 +221,10 @@
                           'No deseo seguir calificando productos', 
                           'La comunidad no es muy colaborativa',
                           'Solo deseo desactivar mi cuenta'],
-        show: true
-
+        show: true,
+        // Datos eliminación de cuenta:
+        delete_pass: "",
+        delete_pass_conf: ""
       }
     },
     async mounted(){
@@ -283,6 +327,36 @@
         this.$nextTick(() => {
           this.show = true
         })
+      },
+      async deleteAccount(){
+        if(this.delete_pass == "" || this.delete_pass_conf == ""){
+          this.mensaje = "Por favor ingresa los datos requeridos."
+          this.error = true;
+        }else if(this.delete_pass != this.delete_pass_conf){
+          this.mensaje = "Las contraseñas no coinciden."
+          this.error = true;
+        }else{
+          //Realizar la solicitud
+          try {
+            const response = await axios.post('http://localhost:8080/users/delete',{
+              "password": this.delete_pass 
+            },{headers:{'Authorization': 'Bearer '+ localStorage.getItem('token')}});
+            if(response.data){
+              this.$store.commit("isLogged", false);
+              this.$store.commit("setUsername", "Usuario");
+              localStorage.clear();
+              this.$router.push('/').catch(()=>{});
+              window.scrollTo(0, 0);
+            }else{
+              this.mensaje = "Ups, algo salió mal inténtalo de nuevo."
+              this.error = true;
+            }
+          } catch (error) {
+            this.mensaje = "Ups, algo salió mal inténtalo de nuevo."
+            this.error = true;
+            console.log(error);
+          }
+        }
       }
     },
     components: {
