@@ -2,21 +2,35 @@
   <div>
     <b-sidebar
       id="sidebar-backdrop"
-      :title="this.$store.state.product_description.name.charAt(0).toUpperCase() + this.$store.state.product_description.name.slice(1)"
+      :title="
+        this.$store.state.product_description.name.charAt(0).toUpperCase() +
+        this.$store.state.product_description.name.slice(1)
+      "
       backdrop-variant="dark"
       backdrop
       shadow
-      width="50%" 
+      width="50%"
     >
-     <template #footer>
-       <div class="d-flex bg-dark text-light align-items-center px-3 py-2">
-        <strong class="mr-auto">ChooseMe</strong>
-       </div>
+      <template #footer>
+        <div class="d-flex bg-dark text-light align-items-center px-3 py-2">
+          <strong class="mr-auto">ChooseMe</strong>
+        </div>
       </template>
       <div class="px-3 py-2">
-        <b-img rounded="circle" width="250%" class="mb-3" src="https://picsum.photos/500/500/?image=54" fluid></b-img>
+        <b-img
+          rounded="circle"
+          width="250%"
+          class="mb-3"
+          src="https://picsum.photos/500/500/?image=54"
+          fluid
+        ></b-img>
         <p align="justify">
-          <b>Descripción del producto:</b><br>{{this.$store.state.product_description.description.charAt(0).toUpperCase() + this.$store.state.product_description.description.slice(1)}}
+          <b>Descripción del producto:</b><br />{{
+            this.$store.state.product_description.description
+              .charAt(0)
+              .toUpperCase() +
+            this.$store.state.product_description.description.slice(1)
+          }}
         </p>
       </div>
     </b-sidebar>
@@ -24,11 +38,9 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        
-      }
-    }
-  }
+export default {
+  data() {
+    return {};
+  },
+};
 </script>

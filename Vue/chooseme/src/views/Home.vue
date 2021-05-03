@@ -11,7 +11,6 @@
   import TopHeader from '../components/TopHeader';
   import Rulet from '../components/Rulet';
   import Footer from '../components/Footer';
-
   export default {
     components: {
       "top-header": TopHeader, 
