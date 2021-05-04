@@ -5,9 +5,10 @@ import "./plugins/bootstrap-vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import VueAxios from 'vue-axios';
-import Axios from 'axios';
-import InfiniteLoading from 'vue-infinite-loading';
+import VueAxios from "vue-axios";
+import Axios from "axios";
+import InfiniteLoading from "vue-infinite-loading";
+import vuetify from "./plugins/vuetify";
 
 Vue.use(InfiniteLoading);
 
@@ -18,5 +19,6 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
+  vuetify,
   render: (h) => h(App),
 }).$mount("#app");
