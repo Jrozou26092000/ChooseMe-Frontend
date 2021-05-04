@@ -1,6 +1,114 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
+    <v-toolbar
+      dark
+      prominent
+      src="@/assets/Toolbar_background.jpg"
+    >
+      <v-app-bar-nav-icon class="mt-5" @click="drawer = !drawer"></v-app-bar-nav-icon>
+      
+      <router-link to="/">
+        <v-img 
+          src="@/assets/Logo_chooseme2.png" 
+          class="ml-5 mt-5"
+          max-height="250"
+          max-width="250"
+          @click.prevent="gotoHome"
+        ></v-img>
+      </router-link>
+      <!-- <img 
+        class="ml-5 mt-5" 
+        src="@/assets/Logo_chooseme2.png" 
+        height="70"
+        href="#" 
+        @click.prevent="gotoHome"
+      /> -->
+
+      <v-spacer></v-spacer>
+
+      <v-text-field
+        label="Buscar productos"
+        filled
+        rounded
+        dense
+        class="mt-5"
+        v-model="product"
+        @keydown.enter="search"
+      ></v-text-field>
+
+     <v-btn icon  class="mt-5" @click.prevent="search">
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+    </v-toolbar>
+
+    <v-navigation-drawer
+      src="@/assets/Toolbar_background.jpg"
+      dark
+      v-model="drawer"
+      absolute
+      temporary
+    >
+      <v-list-item class="mt-5">
+        <v-list-item-avatar>
+          <v-icon v-if="!$store.state.logged" dark>mdi-account-circle</v-icon>
+          <span v-if="$store.state.logged" class="white--text headline">{{($store.state.user).charAt(0).toUpperCase()}}</span>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title>{{$store.state.user}}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list>
+        <v-list-item
+          link
+          v-if="!$store.state.logged"
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-account-box</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title @click="gotoLogin">Iniciar sesión</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item
+          link
+          v-if="!$store.state.logged"
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-arrow-up-bold-box-outline</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title @click="gotoSignin">Resgistrarse</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item
+          link
+          v-if="$store.state.logged"
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-wrench</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title @click="gotoProfile">Configurar cuenta</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+      </v-list>
+
+      <template>
+        <div class="pa-2">
+          <v-btn block @click="Logout" v-if="$store.state.logged">
+            Logout
+          </v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer>
+    <!-- <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
       <b-navbar-brand href="#" @click.prevent="gotoHome"
         >ChooseMe</b-navbar-brand
       >
@@ -38,7 +146,7 @@
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
-    </b-navbar>
+    </b-navbar> -->
   </div>
 </template>
 
@@ -48,6 +156,7 @@ export default {
   data() {
     return {
       product: "",
+      drawer: null
     };
   },
   methods: {

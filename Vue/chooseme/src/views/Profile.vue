@@ -1,5 +1,5 @@
 <template>
-  <div class="profile" style="margin-top: 70px">
+  <div class="profile">
     <top-header ref="head" @header_message="option = $event"></top-header>
     <b-card no-body class="m-5" align="left">
       <b-tabs
