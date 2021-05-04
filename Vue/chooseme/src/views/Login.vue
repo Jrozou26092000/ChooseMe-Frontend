@@ -1,7 +1,62 @@
 <template>
   <div class="login">
     <top-header @header_message="option = $event"></top-header>
-    <b-container style="margin-top: 70px; width: 50%">
+    <v-content>
+         <v-container fluid fill-height class="mt-5">
+            <v-layout align-center justify-center>
+               <v-flex xs12 sm8 md4>
+                  <v-card class="elevation-24">
+                     <v-toolbar dark color="blue darken-3">
+                        <v-toolbar-title>Iniciar sesión</v-toolbar-title>
+                     </v-toolbar>
+                     <v-card-text>
+                        <v-form v-if="show">
+                           <v-text-field
+                              prepend-icon="mdi-account"
+                              name="login"
+                              label="Correo electrónico"
+                              type="text"
+                              v-model="form.email"
+                           ></v-text-field>
+                           <v-text-field
+                              id="password"
+                              prepend-icon="mdi-lock"
+                              name="password"
+                              label="Constraseña"
+                              type="password"
+                              v-model="form.password"
+                           ></v-text-field>
+                        </v-form>
+                     </v-card-text>
+                     <v-card-actions>
+                      <v-spacer /> 
+                      <v-btn @click="onLogin" dark color="blue darken-3" class="mr-4 mb-4">Login</v-btn>
+                     </v-card-actions>
+                  </v-card>
+               </v-flex>
+            </v-layout>
+         </v-container>
+      </v-content>
+
+      <v-snackbar
+      v-model="snackbar"
+      :multi-line="multiLine"
+      >
+        {{ message }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="red"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+
+   <!--  <b-container style="margin-top: 70px; width: 50%">
       <b-card
         header="Bienvenidos a ChooseMe!"
         header-bg-variant="dark"
@@ -56,7 +111,7 @@
           </small>
         </template>
       </b-card>
-    </b-container>
+    </b-container> -->
   </div>
 </template>
 
@@ -73,6 +128,9 @@ export default {
       },
       show: true,
       error: false,
+      multiLine: true,
+      snackbar: false,
+      message: `Emalil o contraseña incorrectos.`,
     };
   },
   methods: {
@@ -95,10 +153,10 @@ export default {
           window.scrollTo(0, 0);
           this.$router.push("/");
         } else {
-          this.error = true;
+          this.snackbar = true;
         }
       } catch (error) {
-        this.error = true;
+        this.snackbar = true;
         console.log(error);
       }
       // Reset our form values
