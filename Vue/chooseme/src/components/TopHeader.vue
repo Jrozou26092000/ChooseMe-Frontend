@@ -2,17 +2,16 @@
   <div>
     <v-toolbar
       dark
-      prominent
-      src="@/assets/Toolbar_background.jpg"
+      src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
     >
-      <v-app-bar-nav-icon class="mt-5" @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       
       <router-link to="/">
         <v-img 
           src="@/assets/Logo_chooseme2.png" 
-          class="ml-5 mt-5"
-          max-height="250"
-          max-width="250"
+          class="ml-5"
+          max-height="150"
+          max-width="150"
           @click.prevent="gotoHome"
         ></v-img>
       </router-link>
@@ -36,13 +35,13 @@
         @keydown.enter="search"
       ></v-text-field>
 
-     <v-btn icon  class="mt-5" @click.prevent="search">
+     <v-btn icon @click.prevent="search">
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </v-toolbar>
 
     <v-navigation-drawer
-      src="@/assets/Toolbar_background.jpg"
+      src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
       dark
       v-model="drawer"
       absolute
