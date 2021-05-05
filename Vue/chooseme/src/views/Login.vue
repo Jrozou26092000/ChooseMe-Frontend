@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <top-header @header_message="option = $event"></top-header>
-    <v-content>
+    <v-main>
          <v-container fluid fill-height class="mt-5">
             <v-layout align-center justify-center>
                <v-flex xs12 sm8 md4>
@@ -25,6 +25,7 @@
                               label="Constraseña"
                               type="password"
                               v-model="form.password"
+                              @keydown.enter="onLogin"
                            ></v-text-field>
                         </v-form>
                      </v-card-text>
@@ -36,7 +37,7 @@
                </v-flex>
             </v-layout>
          </v-container>
-      </v-content>
+      </v-main>
 
       <v-snackbar
       v-model="snackbar"
