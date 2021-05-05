@@ -1,7 +1,91 @@
 <template>
   <div class="product">
     <top-header @header_message="option = $event" class="mb-5"></top-header>
-    <b-container fluid="sm" class="mb-5">
+    <v-container class="grey lighten-5">
+      <v-row
+        no-gutters
+        class="mb-4"
+      >
+        <v-col cols = "4">
+         <v-card
+          class="mx-auto my-12"
+          max-width="374"
+        >
+         <v-img
+            height="250"
+            src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+          ></v-img>
+
+          <v-card-title>
+            {{this.$store.state.current_product.name.charAt(0).toUpperCase() +
+            this.$store.state.current_product.name.slice(1)}}
+          </v-card-title>
+
+          <v-card-text>
+            <v-row
+              align="center"
+              class="mx-0"
+            >
+              <v-rating
+                :value="this.$store.state.current_product.score"
+                color="amber"
+                dense
+                half-increments
+                readonly
+                size="14"
+              ></v-rating>
+
+              <div class="grey--text ml-4">
+                {{this.$store.state.current_product.score}}  ({{$store.state.product_reviews.length}})
+              </div>
+            </v-row>
+
+            <div class="my-4 subtitle-1">
+              <b>Marca:</b> {{this.$store.state.current_product.brand}}
+            </div>
+
+            <div class="my-4 subtitle-1">
+              <b>Precio:</b> ${{ this.$store.state.current_product.price }}
+            </div>
+
+            <div class="my-4 subtitle-1">
+              <b>Fecha de creación:</b> {{ this.$store.state.current_product.created_at.substring(0, 10) }}
+            </div>
+            
+            <div>
+              <b>Descripción:</b> {{this.$store.state.current_product.description.charAt(0).toUpperCase() +
+              this.$store.state.current_product.description.slice(1)}}
+            </div>
+          </v-card-text>
+
+          <v-divider class="mx-4"></v-divider>
+
+          <v-card-title>ChooseMe</v-card-title>
+
+          <v-card-text>
+          </v-card-text>
+        </v-card>
+        </v-col>
+        <v-col cols = "8">
+          <v-card
+            class="pa-2 mx-auto my-12"
+            outlined
+            tile
+            max-width="90%"
+            v-for="(review, index) in $store.state.product_reviews"
+            :key="index"
+          >
+          {{review.comment}}
+          </v-card>
+          <infinite-loading @infinite="getReviews">
+            <div slot="waveDots">Cargando...</div>
+            <div slot="no-more">No hay más resultados :)</div>
+            <div slot="no-results">No se encontraron resultados :(</div>
+          </infinite-loading>
+        </v-col>
+      </v-row>
+    </v-container>
+    <!-- <b-container fluid="sm" class="mb-5">
       <b-row>
         <b-col cols="4" class="mt-5">
           <b-card
@@ -74,12 +158,12 @@
           </b-card>
         </b-col>
       </b-row>
-    </b-container>
-    <infinite-loading @infinite="getReviews">
+    </b-container> -->
+    <!-- <infinite-loading @infinite="getReviews">
       <div slot="waveDots">Cargando...</div>
       <div slot="no-more">No hay más resultados :)</div>
       <div slot="no-results">No se encontraron resultados :(</div>
-    </infinite-loading>
+    </infinite-loading> -->
     <!-- <infinite-loading @infinite="getReviews" spinner="waveDots"></infinite-loading> -->
   </div>
 </template>
