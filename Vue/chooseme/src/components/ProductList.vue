@@ -105,8 +105,8 @@
 
         <v-col cols = "8">
          <v-card
-            class="mb-4"
-            color="#385F73"
+            class="mb-4 mx-auto"
+            color="indigo darken-2"
             dark
             max-width="75%"
             elevation="12"

@@ -18,6 +18,9 @@ export default new Vuex.Store({
     product_search: "",
     product_reviews: [],
     page_product_reviews: 0,
+    reviewers: [],
+    page_reviewers: 0,
+    top5: false
   },
   mutations: {
     setProductlist(state, products) {
@@ -45,15 +48,32 @@ export default new Vuex.Store({
       state.page_product_reviews = 0;
     },
     incrementPage_product_reviews(state) {
-      // CAMBIAR A += 10!!!
-      state.page_product_reviews += 1;
+      state.page_product_reviews += 10;
     },
+    resetReviewersList(state){
+      state.reviewers = [];
+    },
+    addReviewersList(state, reviewers){
+      state.reviewers.push(reviewers);
+    },
+    resetPage_reviewers(state) {
+      state.page_reviewers = 0;
+    },
+    incrementPage_reviewers(state) {
+      state.page_reviewers += 10;
+    },
+    setTop5(state, top5){
+      state.top5 = top5;
+    }
   },
   actions: {},
   modules: {},
   getters: {
     getPage_product_reviews(state) {
       return state.page_product_reviews;
+    },
+    getPage_reviewers(state) {
+      return state.page_reviewers;
     },
     getCurrent_product(state) {
       return state.current_product;

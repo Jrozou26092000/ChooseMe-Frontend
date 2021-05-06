@@ -2,7 +2,7 @@
   <div>
     <v-toolbar
       dark
-      src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+      src="@/assets/HeaderBackground.jpg"
     >
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       
@@ -41,14 +41,14 @@
     </v-toolbar>
 
     <v-navigation-drawer
-      src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+      src = "@/assets/HeaderBackground.jpg"
       dark
       v-model="drawer"
       absolute
       temporary
     >
       <v-list-item class="mt-5">
-        <v-list-item-avatar>
+        <v-list-item-avatar color="grey darken-4">
           <v-icon v-if="!$store.state.logged" dark>mdi-account-circle</v-icon>
           <span v-if="$store.state.logged" class="white--text headline">{{($store.state.user).charAt(0).toUpperCase()}}</span>
         </v-list-item-avatar>
@@ -63,7 +63,7 @@
           v-if="!$store.state.logged"
         >
           <v-list-item-icon>
-            <v-icon>mdi-account-box</v-icon>
+            <v-icon>mdi-login-variant</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -97,6 +97,17 @@
           </v-list-item-content>
         </v-list-item>
 
+        <v-list-item
+          link
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-account-group</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title @click="gotoReviewers">Críticos</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
 
       <template>
@@ -213,6 +224,17 @@ export default {
     gotoSignin() {
       this.$router.push("/signin").catch(() => {});
     },
+    async gotoReviewers(){
+      try {
+          const response = await axios.get("http://localhost:8080/users/top5",{});
+          this.$store.commit("resetReviewersList");
+          this.$store.commit("addReviewersList", response.data);
+          this.$store.commit("setTop5", false);
+        } catch (error) {
+          console.log(error);
+        }
+      this.$router.push("/reviewers").catch(() => {});
+    }
   },
 };
 </script>

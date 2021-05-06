@@ -77,7 +77,7 @@
           >
           {{review.comment}}
           </v-card>
-          <infinite-loading @infinite="getReviews">
+          <infinite-loading @infinite="getReviews" class="mt-5">
             <div slot="waveDots">Cargando...</div>
             <div slot="no-more">No hay más resultados :)</div>
             <div slot="no-results">No se encontraron resultados :(</div>
@@ -182,13 +182,9 @@ export default {
       this.$store.commit("incrementPage_product_reviews");
       try {
         const response = await axios.get(
-          "http://localhost:8080/review/" +
-            this.$store.getters.getCurrent_product.product_id +
-            "/" +
-            this.$store.getters.getPage_product_reviews,
+          "http://localhost:8080/review/"+this.$store.getters.getCurrent_product.product_id+"/"+this.$store.getters.getPage_product_reviews,
           {}
         );
-        console.log(response.data);
         if (response.data.length == 0) {
           //No hay más resultados.
           $state.complete();
@@ -196,7 +192,6 @@ export default {
           this.$store.commit("setProduct_reviews", response.data);
           $state.loaded();
         }
-        //this.$store.commit("setProduct_reviews",response.data);
       } catch (error) {
         console.log(error);
       }
