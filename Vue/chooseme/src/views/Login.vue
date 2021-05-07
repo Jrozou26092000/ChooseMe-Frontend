@@ -1,43 +1,47 @@
 <template>
   <div class="login">
     <top-header @header_message="option = $event"></top-header>
-    <v-main>
-         <v-container fluid fill-height class="mt-5">
-            <v-layout align-center justify-center>
-               <v-flex xs12 sm8 md4>
-                  <v-card class="elevation-24">
-                     <v-toolbar dark color="blue darken-3">
-                        <v-toolbar-title>Iniciar sesión</v-toolbar-title>
-                     </v-toolbar>
-                     <v-card-text>
-                        <v-form v-if="show">
-                           <v-text-field
-                              prepend-icon="mdi-account"
-                              name="login"
-                              label="Correo electrónico"
-                              type="text"
-                              v-model="form.email"
-                           ></v-text-field>
-                           <v-text-field
-                              id="password"
-                              prepend-icon="mdi-lock"
-                              name="password"
-                              label="Constraseña"
-                              type="password"
-                              v-model="form.password"
-                              @keydown.enter="onLogin"
-                           ></v-text-field>
-                        </v-form>
-                     </v-card-text>
-                     <v-card-actions>
-                      <v-spacer /> 
-                      <v-btn @click="onLogin" dark color="blue darken-3" class="mr-4 mb-4">Login</v-btn>
-                     </v-card-actions>
-                  </v-card>
-               </v-flex>
-            </v-layout>
+         <v-container fluid class="mt-5">
+           <v-row justify="center">
+              <v-card class="elevation-24" width="35%">
+                  <v-toolbar dark color="indigo darken-2">
+                    <v-toolbar-title>Iniciar sesión</v-toolbar-title>
+                  </v-toolbar>
+                  <v-card-text>
+                    <v-form v-if="show">
+                        <v-text-field
+                          prepend-icon="mdi-account"
+                          name="login"
+                          label="Correo electrónico"
+                          type="text"
+                          v-model="form.email"
+                        ></v-text-field>
+                        <v-text-field
+                          id="password"
+                          prepend-icon="mdi-lock"
+                          name="password"
+                          label="Constraseña"
+                          type="password"
+                          v-model="form.password"
+                          @keydown.enter="onLogin"
+                        ></v-text-field>
+                    </v-form>
+                  </v-card-text>
+                  <v-card-actions>
+                  <v-spacer /> 
+                  <v-btn @click="onLogin" dark color="indigo darken-2" class="mr-4 mb-4">Login</v-btn>
+                  </v-card-actions>
+              </v-card>
+           </v-row>
          </v-container>
-      </v-main>
+
+         <!-- <v-container>
+           <v-row>
+            <v-img src="@/assets/HeaderBackground.jpg">
+
+            </v-img>
+           </v-row>
+         </v-container> -->
 
       <v-snackbar
       v-model="snackbar"
