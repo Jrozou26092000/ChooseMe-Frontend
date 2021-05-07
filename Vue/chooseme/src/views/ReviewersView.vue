@@ -23,16 +23,26 @@
                 <v-col
                      v-for="(reviewer, key) in $store.state.reviewers[0]"
                     :key="key"
-                    cols="4"
+                    cols="3"
                 >
                     <v-card>
                         <v-img
-                        src="https://cdn.vuetifyjs.com/images/cards/halcyon.png"
+                        src="@/assets/Profile_background.jpg"
                         class="white--text align-end"
                         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                         max-height="20%"
                         >
-                        <v-card-title v-text="reviewer.user_name"></v-card-title>
+                            <v-container class="mb-5">
+                                <v-row justify="center">
+                                    <v-avatar size="70%">
+                                        <img
+                                            src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                                            alt="John"
+                                        >
+                                    </v-avatar>
+                                </v-row>
+                            </v-container>
+                            <v-card-title v-text="reviewer.user_name"></v-card-title>
                         </v-img>
 
                         <v-card-actions>
