@@ -1,7 +1,106 @@
 <template>
   <div class="signin">
     <top-header @header_message="option = $event"></top-header>
-    <b-container style="margin-top: 70px; width: 50%">
+      <v-container fluid class="my-5">
+           <v-row justify="center">
+              <v-card class="elevation-24" width="35%">
+                  <v-toolbar dark color="indigo darken-2">
+                    <v-toolbar-title>Crear una cuenta</v-toolbar-title>
+                  </v-toolbar>
+                  <v-card-text>
+                    <v-form v-if="show" v-model="isFormValid">
+                        <v-text-field
+                          prepend-icon="mdi-account"
+                          name="user_name"
+                          label="Nombre de Usuario"
+                          type="text"
+                          v-model="form.user"
+                          required
+                          :rules="[() => !!form.user || 'Este campo es requerido']"
+                        ></v-text-field>
+                        <v-text-field
+                          prepend-icon="mdi-email"
+                          name="email"
+                          label="Correo electrónico"
+                          type="text"
+                          v-model="form.email"
+                          required
+                          :rules="[() => !!form.email || 'Este campo es requerido']"
+                        ></v-text-field>
+                        <v-text-field
+                          prepend-icon="mdi-form-textbox"
+                          name="name"
+                          label="Nombre"
+                          type="text"
+                          v-model="form.name"
+                          required
+                          :rules="[() => !!form.name || 'Este campo es requerido']"
+                        ></v-text-field>
+                        <v-text-field
+                          prepend-icon="mdi-form-textbox"
+                          name="lastname"
+                          label="Apellido"
+                          type="text"
+                          v-model="form.lastname"
+                          required
+                          :rules="[() => !!form.lastname || 'Este campo es requerido']"
+                        ></v-text-field>
+                        <v-text-field
+                          prepend-icon="mdi-phone"
+                          name="phone"
+                          label="Telefono"
+                          type="text"
+                          v-model="form.phone"
+                          required
+                          :rules="[() => !!form.phone || 'Este campo es requerido']"
+                        ></v-text-field>
+                        <v-text-field
+                          prepend-icon="mdi-lock"
+                          name="password"
+                          label="Contraseña"
+                          type="password"
+                          v-model="form.password"
+                          required
+                          :rules="[() => !!form.password || 'Este campo es requerido']"
+                        ></v-text-field>
+                        <v-text-field
+                          prepend-icon="mdi-lock-alert"
+                          name="passwordagain"
+                          label="Confirmación contraseña"
+                          type="password"
+                          v-model="form.passwordagain"
+                          required
+                          :rules="[() => !!form.passwordagain || 'Este campo es requerido']"
+                        ></v-text-field>
+                    </v-form>
+                  </v-card-text>
+                  <v-card-actions>
+                  <v-spacer /> 
+                  <v-btn @click="onSignin" color="indigo darken-2" :dark="isFormValid" class="mr-4 mb-4"  depressed :disabled="!isFormValid">Sign In</v-btn>
+                  </v-card-actions>
+              </v-card>
+           </v-row>
+         </v-container>
+
+      <v-snackbar
+      v-model="snackbar"
+      :multi-line="multiLine"
+      >
+        {{ message }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            :color="color"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    
+    <!-- <b-container style="margin-top: 70px; width: 50%">
       <b-card
         header="Bienvenidos a ChooseMe!"
         header-bg-variant="dark"
@@ -131,10 +230,7 @@
           </small>
         </template>
       </b-card>
-      <!-- <b-card class="mt-3" header="Form Data Result">
-                <pre class="m-0">{{ form }}</pre>
-            </b-card> -->
-    </b-container>
+    </b-container> -->
   </div>
 </template>
 
@@ -154,8 +250,11 @@ export default {
         passwordagain: "",
       },
       show: true,
-      error: false,
-      success: false,
+      multiLine: true,
+      snackbar: false,
+      message: "",
+      color: "",
+      isFormValid: false
     };
   },
   methods: {
@@ -173,12 +272,18 @@ export default {
           phone: this.form.phone,
         });
         if (response.data) {
-          this.success = true;
+          this.color = "green"
+          this.snackbar = true;
+          this.message = "Bienvenido a ChooseMe!"
         } else {
-          this.error = true;
+          this.color = "red"
+          this.snackbar = true;
+          this.message = "Datos inválidos, inténtalo de nuevo."
         }
       } catch (error) {
-        this.error = true;
+        this.color = "red"
+        this.snackbar = true;
+        this.message = "Datos inválidos, inténtalo de nuevo."
         console.log(error);
       }
       // Reset our form values
