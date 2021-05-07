@@ -15,6 +15,8 @@
                           label="Correo electrónico"
                           type="text"
                           v-model="form.email"
+                          required
+                          :rules="[() => !!form.email || 'Este campo es requerido']"
                         ></v-text-field>
                         <v-text-field
                           id="password"
@@ -23,6 +25,8 @@
                           label="Constraseña"
                           type="password"
                           v-model="form.password"
+                          required
+                          :rules="[() => !!form.password || 'Este campo es requerido']"
                           @keydown.enter="onLogin"
                         ></v-text-field>
                     </v-form>
@@ -34,14 +38,6 @@
               </v-card>
            </v-row>
          </v-container>
-
-         <!-- <v-container>
-           <v-row>
-            <v-img src="@/assets/HeaderBackground.jpg">
-
-            </v-img>
-           </v-row>
-         </v-container> -->
 
       <v-snackbar
       v-model="snackbar"
@@ -132,10 +128,9 @@ export default {
         password: "",
       },
       show: true,
-      error: false,
       multiLine: true,
       snackbar: false,
-      message: `Emalil o contraseña incorrectos.`,
+      message: `Emalil o contraseña incorrectos.`
     };
   },
   methods: {
@@ -176,6 +171,6 @@ export default {
   },
   components: {
     "top-header": TopHeader,
-  },
+  }
 };
 </script>
