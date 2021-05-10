@@ -11,16 +11,17 @@ export default new Vuex.Store({
     }),
   ],
   state: {
-    products: [],
-    logged: false,
-    user: "Usuario",
-    current_product: "",
-    product_search: "",
-    product_reviews: [],
-    page_product_reviews: 0,
-    reviewers: [],
-    page_reviewers: 0,
-    top5: false
+    products: [], // Lista de los productos que fueron buscados.
+    logged: false, // Indicador hay un usuario logueado o no.
+    user: "Usuario", // Nombre del usuario actual.
+    current_product: "", // Producto actual que se esta consultando. 
+    product_search: "", // Nombre de la busqueda de la busqueda de productos.
+    product_reviews: [], // Lista de las reviews de un producto consultado.
+    page_product_reviews: 0, // Paginado reviews de los productos.
+    reviewers: [], // Lista de reviewers consultados.
+    page_reviewers: 0, // Paginado de los reviewers.
+    top5: false, // Indicador si se se está consultando el top 5 o no.
+    current_reviewer: "" // Reviewers actual que está siendo consultado.
   },
   mutations: {
     setProductlist(state, products) {
@@ -64,6 +65,9 @@ export default new Vuex.Store({
     },
     setTop5(state, top5){
       state.top5 = top5;
+    },
+    setCurrent_reviewer(state, reviewer){
+      state.current_reviewer = reviewer;
     }
   },
   actions: {},
