@@ -4,7 +4,7 @@
          <v-container fluid class="mt-5">
            <v-row justify="center">
               <v-card class="elevation-24" width="35%">
-                  <v-toolbar dark color="indigo darken-2">
+                  <v-toolbar dark color="#102f85">
                     <v-toolbar-title>Iniciar sesión</v-toolbar-title>
                   </v-toolbar>
                   <v-card-text>
@@ -33,7 +33,7 @@
                   </v-card-text>
                   <v-card-actions>
                   <v-spacer /> 
-                  <v-btn @click="onLogin" dark color="indigo darken-2" class="mr-4 mb-4">Login</v-btn>
+                  <v-btn @click="onLogin" dark color="#102f85" class="mr-4 mb-4">Login</v-btn>
                   </v-card-actions>
               </v-card>
            </v-row>

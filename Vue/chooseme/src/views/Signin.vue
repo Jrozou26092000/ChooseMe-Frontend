@@ -4,7 +4,7 @@
       <v-container fluid class="my-5">
            <v-row justify="center">
               <v-card class="elevation-24" width="35%">
-                  <v-toolbar dark color="indigo darken-2">
+                  <v-toolbar dark color="#102f85">
                     <v-toolbar-title>Crear una cuenta</v-toolbar-title>
                   </v-toolbar>
                   <v-card-text>
@@ -76,7 +76,7 @@
                   </v-card-text>
                   <v-card-actions>
                   <v-spacer /> 
-                  <v-btn @click="onSignin" color="indigo darken-2" :dark="isFormValid" class="mr-4 mb-4"  depressed :disabled="!isFormValid">Sign In</v-btn>
+                  <v-btn @click="onSignin" color="#102f85" :dark="isFormValid" class="mr-4 mb-4"  depressed :disabled="!isFormValid">Sign In</v-btn>
                   </v-card-actions>
               </v-card>
            </v-row>
