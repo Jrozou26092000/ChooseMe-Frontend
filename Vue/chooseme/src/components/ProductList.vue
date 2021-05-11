@@ -150,7 +150,7 @@
                 size="200"
                 tile
               >
-                <v-img src="https://picsum.photos/400/400/?image=20"></v-img>
+                <v-img src="https://http2.mlstatic.com/D_NQ_NP_843870-MLA44706994693_012021-V.webp"></v-img>
               </v-avatar>
             </div>
           </v-card>

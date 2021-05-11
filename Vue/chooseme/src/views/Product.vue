@@ -12,8 +12,8 @@
           max-width="374"
         >
          <v-img
-            height="250"
-            src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+            max-height="300"
+            src="https://http2.mlstatic.com/D_NQ_NP_843870-MLA44706994693_012021-V.webp"
           ></v-img>
 
           <v-card-title>
@@ -110,7 +110,7 @@
                   <v-img
                     class="elevation-6"
                     alt=""
-                    src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
+                    src="@/assets/avatar.png"
                   ></v-img>
                 </v-list-item-avatar>
 
