@@ -1,8 +1,6 @@
 <template>
-    <div class="reviewers">
-        <top-header @header_message="option = $event" class="mb-5"></top-header>
-        <reviewers-list />
-        <!-- <v-container class="grey lighten-5">
+    <div>
+        <v-container class="grey lighten-5">
             <v-row>
                 <v-col>
                     <v-text-field
@@ -22,7 +20,7 @@
             </v-row>
             <v-row>
                 <v-col
-                     v-for="(reviewer, key) in $store.state.reviewers[0]"
+                    v-for="(reviewer, key) in $store.state.reviewers"
                     :key="key"
                     cols="3"
                 >
@@ -71,26 +69,20 @@
                 <div slot="no-more">No hay más resultados :)</div>
                 <div slot="no-results">No se encontraron resultados :(</div>
             </infinite-loading>
-        </v-container> -->
+        </v-container>
     </div>
 </template>
 
 <script>
-// import axios from "axios";
-import TopHeader from "../components/TopHeader";
-import ReviewersList from "../components/ReviewersList";
+import axios from "axios";
 
 export default {
-    /* data(){
+    data(){
         return{
             reviewer_name: ""
         }
-    }, */
-    components: {
-        "top-header": TopHeader,
-        "reviewers-list": ReviewersList
     },
-    /* methods: {
+    methods: {
         async search(){
             this.$store.commit("resetPage_reviewers");
             this.$store.commit("setTop5", false);
@@ -104,27 +96,46 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-            this.reviewer_name = ""
+            //this.reviewer_name = ""
         },
-        view_profile(reviewer){ // HACER EL DIRECCIONAMIENTO!
-            console.log("Perfil de "+reviewer);
+        view_profile(reviewer){
+            // Obtener las reviews de un reviewer.
+            /* try { 
+                const response = await axios.get(
+                "http://localhost:8080/review/" + product.product_id + "/0",
+                {}
+                );
+                this.$store.commit("resetProduct_reviews", response.data);
+                this.$store.commit("resetPage_product_reviews");
+            } catch (error) {
+                console.log(error);
+            } */
+            this.$store.commit("setCurrent_reviewer", reviewer);
+            window.scrollTo(0, 0);
+            this.$router
+                .push({ path: `/reviewer/${reviewer.user_name}/${reviewer.user_id}` })
+                .catch(() => {});
         },
         async getReviewers($state){
+            this.$store.commit("incrementPage_reviewers");
             try {
-                const response = await axios.post("http://localhost:8080/users/search/"+ this.$store.getters.getPage_reviewers,{});
+                const response = await axios.post("http://localhost:8080/users/search/"+ this.$store.getters.getPage_reviewers,{
+                    "user_name": this.reviewer_name
+                });
                 if (response.data.length == 0) {
                     //No hay más resultados.
                     $state.complete();
                 } else {
-                    console.log(response.data);
+                    // console.log(response);
+                    // console.log(this.$store.getters.getPage_reviewers);
                     this.$store.commit("addReviewersList", response.data);
-                    this.$store.commit("incrementPage_reviewers");
+                    // this.$store.commit("incrementPage_reviewers");
                     $state.loaded();
                 }
             } catch (error) {
                 console.log(error);
             }
         }
-    } */
-};
+    }
+}
 </script>
