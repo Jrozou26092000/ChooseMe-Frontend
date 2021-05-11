@@ -20,7 +20,7 @@
             </v-row>
             <v-row>
                 <v-col
-                     v-for="(reviewer, key) in $store.state.reviewers[0]"
+                    v-for="(reviewer, key) in $store.state.reviewers"
                     :key="key"
                     cols="3"
                 >
@@ -96,7 +96,7 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-            this.reviewer_name = ""
+            //this.reviewer_name = ""
         },
         view_profile(reviewer){
             // Obtener las reviews de un reviewer.
@@ -117,15 +117,19 @@ export default {
                 .catch(() => {});
         },
         async getReviewers($state){
+            this.$store.commit("incrementPage_reviewers");
             try {
-                const response = await axios.post("http://localhost:8080/users/search/"+ this.$store.getters.getPage_reviewers,{});
+                const response = await axios.post("http://localhost:8080/users/search/"+ this.$store.getters.getPage_reviewers,{
+                    "user_name": this.reviewer_name
+                });
                 if (response.data.length == 0) {
                     //No hay más resultados.
                     $state.complete();
                 } else {
-                    console.log(response.data);
+                    // console.log(response);
+                    // console.log(this.$store.getters.getPage_reviewers);
                     this.$store.commit("addReviewersList", response.data);
-                    this.$store.commit("incrementPage_reviewers");
+                    // this.$store.commit("incrementPage_reviewers");
                     $state.loaded();
                 }
             } catch (error) {

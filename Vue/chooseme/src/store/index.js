@@ -53,9 +53,10 @@ export default new Vuex.Store({
     },
     resetReviewersList(state){
       state.reviewers = [];
+      console.log(state.reviewers);
     },
     addReviewersList(state, reviewers){
-      state.reviewers.push(reviewers);
+      state.reviewers.push(...reviewers);
     },
     resetPage_reviewers(state) {
       state.page_reviewers = 0;
@@ -81,6 +82,6 @@ export default new Vuex.Store({
     },
     getCurrent_product(state) {
       return state.current_product;
-    },
+    }
   },
 });

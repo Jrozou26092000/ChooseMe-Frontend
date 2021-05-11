@@ -13,7 +13,7 @@
         >
          <v-img
             max-height="300"
-            src="https://http2.mlstatic.com/D_NQ_NP_843870-MLA44706994693_012021-V.webp"
+            :src="this.$store.state.current_product.photo"
           ></v-img>
 
           <v-card-title>
