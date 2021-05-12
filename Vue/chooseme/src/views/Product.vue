@@ -13,6 +13,8 @@
         >
          <v-img
             max-height="300"
+            contain
+            class="grey lighten-4"
             :src="this.$store.state.current_product.photo"
           ></v-img>
 
@@ -52,7 +54,7 @@
               <b>Fecha de creación:</b> {{ this.$store.state.current_product.created_at.substring(0, 10) }}
             </div>
             
-            <div>
+            <div style="text-align: justify;">
               <b>Descripción:</b> {{this.$store.state.current_product.description.charAt(0).toUpperCase() +
               this.$store.state.current_product.description.slice(1)}}
             </div>

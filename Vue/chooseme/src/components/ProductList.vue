@@ -150,7 +150,7 @@
                 size="200"
                 tile
               >
-                <v-img :src="product.photo"></v-img>
+                <v-img contain class="grey lighten-4" :src="product.photo"></v-img>
               </v-avatar>
             </div>
           </v-card>

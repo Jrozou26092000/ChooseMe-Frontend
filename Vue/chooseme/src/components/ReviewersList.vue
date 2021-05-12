@@ -15,7 +15,13 @@
                     ></v-text-field>
                 </v-col>
                 <v-col>
-                    Filtros
+                   <!--  <v-sheet
+                        class="d-flex"
+                        color="#102f85"
+                        height="50"
+                        rounded
+                    >
+                    </v-sheet> -->
                 </v-col>
             </v-row>
             <v-row>
@@ -26,7 +32,7 @@
                 >
                     <v-card>
                         <v-img
-                        src="@/assets/Profile_background.jpg"
+                        src="@/assets/Profile_background2.jpg"
                         class="white--text align-end"
                         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                         max-height="20%"
