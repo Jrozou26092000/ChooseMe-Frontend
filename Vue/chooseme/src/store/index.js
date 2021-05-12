@@ -53,7 +53,6 @@ export default new Vuex.Store({
     },
     resetReviewersList(state){
       state.reviewers = [];
-      console.log(state.reviewers);
     },
     addReviewersList(state, reviewers){
       state.reviewers.push(...reviewers);
