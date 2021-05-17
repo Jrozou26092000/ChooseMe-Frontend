@@ -21,7 +21,8 @@ export default new Vuex.Store({
     reviewers: [], // Lista de reviewers consultados.
     page_reviewers: 0, // Paginado de los reviewers.
     top5: false, // Indicador si se se está consultando el top 5 o no.
-    current_reviewer: "" // Reviewers actual que está siendo consultado.
+    current_reviewer: "", // Reviewer actual que está siendo consultado.
+    reviewer_search: ""
   },
   mutations: {
     setProductlist(state, products) {
@@ -40,7 +41,7 @@ export default new Vuex.Store({
       state.product_search = product_search;
     },
     setProduct_reviews(state, reviews) {
-      state.product_reviews.push(reviews);
+      state.product_reviews.push(...reviews);
     },
     resetProduct_reviews(state, new_reviews) {
       state.product_reviews = new_reviews;
@@ -49,7 +50,7 @@ export default new Vuex.Store({
       state.page_product_reviews = 0;
     },
     incrementPage_product_reviews(state) {
-      state.page_product_reviews += 10;
+      state.page_product_reviews += 1;
     },
     resetReviewersList(state){
       state.reviewers = [];
@@ -68,6 +69,9 @@ export default new Vuex.Store({
     },
     setCurrent_reviewer(state, reviewer){
       state.current_reviewer = reviewer;
+    },
+    setReviewer_search(state, reviewer){
+      state.reviewer_search = reviewer;
     }
   },
   actions: {},

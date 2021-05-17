@@ -90,11 +90,12 @@ export default {
     },
     methods: {
         async search(){
+            this.$store.commit("setReviewer_search", this.reviewer_name);
             this.$store.commit("resetPage_reviewers");
             this.$store.commit("setTop5", false);
              try {
                 const response = await axios.post("http://localhost:8080/users/search/"+this.$store.getters.getPage_reviewers,{
-                    "user_name": this.reviewer_name
+                    "user_name": this.$store.state.reviewer_search
                 });
                 this.$store.commit("resetReviewersList");
                 this.$store.commit("addReviewersList", response.data);
@@ -126,16 +127,13 @@ export default {
             this.$store.commit("incrementPage_reviewers");
             try {
                 const response = await axios.post("http://localhost:8080/users/search/"+ this.$store.getters.getPage_reviewers,{
-                    "user_name": this.reviewer_name
+                    "user_name": this.$store.state.reviewer_search
                 });
                 if (response.data.length == 0) {
                     //No hay más resultados.
                     $state.complete();
                 } else {
-                    // console.log(response);
-                    // console.log(this.$store.getters.getPage_reviewers);
                     this.$store.commit("addReviewersList", response.data);
-                    // this.$store.commit("incrementPage_reviewers");
                     $state.loaded();
                 }
             } catch (error) {
