@@ -2,8 +2,8 @@
   <div>
     <b-carousel
       id="carousel-1"
-      img-width="800"
-      img-height="400"
+      img-width="1024"
+      img-height="430"
       :interval="4000"
       controls
       indicators

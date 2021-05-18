@@ -88,8 +88,8 @@
             </v-card-title>
 
             <v-card-text>
-              <v-row class="ml-3 mt-1">
-                <div class="headline font-weight-bold">"{{review.comment}}"</div>
+              <v-row class="mx-3 my-1">
+                <div class="font-weight-bold" style="text-align: justify;font-size: 120%;">"{{review.comment}}"</div>
               </v-row>
               <v-row class="ml-3 mt-5">
                 <div>Calificación: ({{review.score}})
