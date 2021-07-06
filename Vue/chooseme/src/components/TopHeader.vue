@@ -61,51 +61,55 @@
         <v-list-item
           link
           v-if="!$store.state.logged"
+          @click="gotoLogin"
         >
           <v-list-item-icon>
             <v-icon>mdi-login-variant</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title @click="gotoLogin">Iniciar sesión</v-list-item-title>
+            <v-list-item-title>Iniciar sesión</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
         <v-list-item
           link
           v-if="!$store.state.logged"
+          @click="gotoSignin"
         >
           <v-list-item-icon>
             <v-icon>mdi-arrow-up-bold-box-outline</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title @click="gotoSignin">Resgistrarse</v-list-item-title>
+            <v-list-item-title>Resgistrarse</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
         <v-list-item
           link
           v-if="$store.state.logged"
+          @click="gotoProfile"
         >
           <v-list-item-icon>
             <v-icon>mdi-wrench</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title @click="gotoProfile">Configurar cuenta</v-list-item-title>
+            <v-list-item-title>Configurar cuenta</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
         <v-list-item
           link
+          @click="gotoReviewers"
         >
           <v-list-item-icon>
             <v-icon>mdi-account-group</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title @click="gotoReviewers">Críticos</v-list-item-title>
+            <v-list-item-title>Críticos</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -118,45 +122,6 @@
         </div>
       </template>
     </v-navigation-drawer>
-    <!-- <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
-      <b-navbar-brand href="#" @click.prevent="gotoHome"
-        >ChooseMe</b-navbar-brand
-      >
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav class="ml-auto">
-          <b-nav-form class="px-3">
-            <b-form-input
-              size="sm"
-              class="mr-sm-2"
-              placeholder="Buscar productos"
-              v-model="product"
-            ></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" @click.prevent="search"
-              >Buscar</b-button
-            >
-          </b-nav-form>
-          <b-avatar></b-avatar>
-          <b-nav-item-dropdown right class="px-3">
-            <template #button-content>
-              {{ $store.state.user }}
-            </template>
-            <b-dropdown-item @click="gotoLogin" v-if="!$store.state.logged"
-              >Iniciar sesión</b-dropdown-item
-            >
-            <b-dropdown-item @click="gotoSignin" v-if="!$store.state.logged"
-              >Resgistrarse</b-dropdown-item
-            >
-            <b-dropdown-item v-if="$store.state.logged" @click="gotoProfile"
-              >Configurar cuenta</b-dropdown-item
-            >
-            <b-dropdown-item v-if="$store.state.logged" @click="Logout"
-              >Salir</b-dropdown-item
-            >
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar> -->
   </div>
 </template>
 

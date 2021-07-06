@@ -142,9 +142,36 @@
             </v-card-actions>
           </v-card>
           <infinite-loading @infinite="getReviews" class="mt-5">
-            <div slot="waveDots">Cargando...</div>
-            <div slot="no-more">No hay más resultados :)</div>
-            <div slot="no-results">No se encontraron resultados :(</div>
+            <div slot="waveDots">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> Cargando... </strong>
+                            </v-alert>
+                        </div>
+                        <div slot="no-more">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> No hay más resultados </strong>
+                            </v-alert>
+                        </div>
+                        <div slot="no-results">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> No hay más resultados </strong>
+                            </v-alert>
+                        </div>
           </infinite-loading>
         </v-col>
       </v-row>

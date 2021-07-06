@@ -62,18 +62,45 @@
                             </v-btn>
                             <v-spacer></v-spacer>
 
-                            <div>({{reviewer.points}})</div>
-                            <v-btn icon>
-                                <v-icon>mdi-heart</v-icon>
+                            <div class="font-weight-medium">({{reviewer.points}})</div>
+                            <v-btn icon color="light-green darken-1">
+                                <v-icon>mdi-check-circle</v-icon>
                             </v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
              <infinite-loading @infinite="getReviewers" v-if="$store.state.top5" class="mt-5">
-                <div slot="waveDots">Cargando...</div>
-                <div slot="no-more">No hay más resultados :)</div>
-                <div slot="no-results">No se encontraron resultados :(</div>
+                <div slot="waveDots">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> Cargando... </strong>
+                            </v-alert>
+                        </div>
+                        <div slot="no-more">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> No hay más resultados </strong>
+                            </v-alert>
+                        </div>
+                        <div slot="no-results">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> No hay más resultados </strong>
+                            </v-alert>
+                        </div>
             </infinite-loading>
         </v-container>
     </div>
@@ -105,19 +132,21 @@ export default {
             }
             //this.reviewer_name = ""
         },
-        view_profile(reviewer){
+        async view_profile(reviewer){
             // Obtener las reviews de un reviewer.
-            /* try { 
+            try { 
                 const response = await axios.get(
-                "http://localhost:8080/review/" + product.product_id + "/0",
+                "http://localhost:8080/user/review/" + reviewer.user_id + "/0",
                 {}
                 );
-                this.$store.commit("resetProduct_reviews", response.data);
-                this.$store.commit("resetPage_product_reviews");
+                this.$store.commit("resetReviewsReviewer");
+                this.$store.commit("addReviewsReviewer", response.data);
+                this.$store.commit("resetPage_reviews_reviewer");
             } catch (error) {
                 console.log(error);
-            } */
+            } 
             this.$store.commit("setCurrent_reviewer", reviewer);
+            console.log(reviewer);
             window.scrollTo(0, 0);
             this.$router
                 .push({ path: `/reviewer/${reviewer.user_name}/${reviewer.user_id}` })

@@ -12,13 +12,16 @@ export default new Vuex.Store({
   ],
   state: {
     products: [], // Lista de los productos que fueron buscados.
+    product_reviews: [], // Lista de las reviews de un producto consultado.
+    reviewers: [], // Lista de reviewers consultados.
+    reviews_reviewer: [], //Lista de reviews de un reviewer.
+
+    page_reviews_reviewer: 0, //Paginación de los reviews de un reviewer
     logged: false, // Indicador hay un usuario logueado o no.
     user: "Usuario", // Nombre del usuario actual.
     current_product: "", // Producto actual que se esta consultando. 
     product_search: "", // Nombre de la busqueda de la busqueda de productos.
-    product_reviews: [], // Lista de las reviews de un producto consultado.
     page_product_reviews: 0, // Paginado reviews de los productos.
-    reviewers: [], // Lista de reviewers consultados.
     page_reviewers: 0, // Paginado de los reviewers.
     top5: false, // Indicador si se se está consultando el top 5 o no.
     current_reviewer: "", // Reviewer actual que está siendo consultado.
@@ -72,6 +75,22 @@ export default new Vuex.Store({
     },
     setReviewer_search(state, reviewer){
       state.reviewer_search = reviewer;
+    },
+
+    addReviewsReviewer(state, reviews){
+      state.reviews_reviewer.push(...reviews);
+    },
+
+    resetReviewsReviewer(state){
+      state.reviews_reviewer = [];
+    },
+
+    resetPage_reviews_reviewer(state){
+      state.page_reviews_reviewer = 0;
+    },
+
+    incrementPage_reviews_reviewer(state){
+      state.page_reviews_reviewer += 10;
     }
   },
   actions: {},
@@ -85,6 +104,9 @@ export default new Vuex.Store({
     },
     getCurrent_product(state) {
       return state.current_product;
+    },
+    getPage_reviews_reviewer(state) {
+      return state.page_reviews_reviewer;
     }
   },
 });
