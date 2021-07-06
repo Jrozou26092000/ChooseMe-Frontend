@@ -79,7 +79,7 @@
                             </v-list-item-avatar>
 
                             <v-list-item-content>
-                            <v-list-item-title>{{review.product_id}}</v-list-item-title>
+                            <v-list-item-title>{{review.product_name}}</v-list-item-title>
                             </v-list-item-content>
 
                             <v-row

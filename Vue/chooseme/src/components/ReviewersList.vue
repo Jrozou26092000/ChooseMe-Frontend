@@ -142,6 +142,7 @@ export default {
                 this.$store.commit("resetReviewsReviewer");
                 this.$store.commit("addReviewsReviewer", response.data);
                 this.$store.commit("resetPage_reviews_reviewer");
+                console.log(response.data);
             } catch (error) {
                 console.log(error);
             } 
