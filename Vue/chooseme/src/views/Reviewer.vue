@@ -25,13 +25,116 @@
                             <v-card-actions>
                             <v-spacer></v-spacer>
 
-                            <div>Puntos del crítico: ({{$store.state.current_reviewer.points}})</div>
+                            <div class="font-weight-medium">Puntos del crítico: ({{$store.state.current_reviewer.points}})</div>
                             
                             </v-card-actions>
                         </v-card>
                 </v-col>
                 <v-col cols=12>
-                    Aquí van las Reviews del usuario.
+                    <v-card
+                        class="mx-auto my-12"
+                        color="#102f85"
+                        dark
+                        max-width="80%"
+                        v-for="(review, index) in this.$store.state.reviews_reviewer"
+                        :key="index"
+                    >
+                        <v-card-title>
+                        <v-icon
+                            large
+                            left
+                        >
+                            mdi-check-circle
+                        </v-icon>
+                        <span class="title font-weight-light">ChooseMe</span>
+                        </v-card-title>
+
+                        <v-card-text>
+                        <v-row class="mx-3 my-1">
+                            <div class="font-weight-bold" style="text-align: justify;font-size: 120%;">"{{review.comment}}"</div>
+                        </v-row>
+                        <v-row class="ml-3 mt-5">
+                            <div>Calificación: ({{review.score}})
+                            <v-tooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                <v-icon v-bind="attrs" v-on="on" medium>mdi-information</v-icon>
+                                </template>
+                                <span>Las calificaciones de las críticas estan en una escala de 1-5.</span>
+                            </v-tooltip>
+                            </div>
+                            </v-row>
+                            <v-row class="ml-3">
+                            <div>Creado: {{review.created_at.substring(0, 10)}}</div>
+                            </v-row>
+                        </v-card-text>
+
+                        <v-card-actions>
+                        <v-list-item class="grow">
+                            <v-list-item-avatar rounded=0>
+                            <v-img
+                                elevation = 6
+                                alt=""
+                                src="@/assets/paquete.png"
+                            ></v-img>
+                            </v-list-item-avatar>
+
+                            <v-list-item-content>
+                            <v-list-item-title>{{review.product_id}}</v-list-item-title>
+                            </v-list-item-content>
+
+                            <v-row
+                            align="center"
+                            justify="end"
+                            >
+                            <v-btn icon>
+                                <v-icon class="mr-2">
+                                mdi-thumb-up
+                                </v-icon>
+                            </v-btn>
+                            <span class="subheading mr-2">256</span>
+                            <span class="mr-1">·</span>
+                            <v-btn icon>
+                                <v-icon class="mr-2">
+                                mdi-thumb-down
+                                </v-icon>
+                            </v-btn>
+                            <span class="subheading">45</span>
+                            </v-row>
+                        </v-list-item>
+                        </v-card-actions>
+                    </v-card>
+                    <infinite-loading @infinite="getReviewsReviewer" class="mt-5">
+                        <div slot="waveDots">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> Cargando... </strong>
+                            </v-alert>
+                        </div>
+                        <div slot="no-more">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> No hay más resultados </strong>
+                            </v-alert>
+                        </div>
+                        <div slot="no-results">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> No hay más resultados </strong>
+                            </v-alert>
+                        </div>
+                    </infinite-loading>
                 </v-col>
             </v-row>
         </v-container>
@@ -39,11 +142,33 @@
 </template>
 
 <script>
+import axios from "axios";
 import TopHeader from "../components/TopHeader";
+import InfiniteLoading from "vue-infinite-loading";
 
 export default{
     components: {
-        "top-header": TopHeader
-    }
+        "top-header": TopHeader,
+        InfiniteLoading
+  },
+  methods: {
+    async getReviewsReviewer($state) {
+      this.$store.commit("incrementPage_reviews_reviewer");
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/review/"+ this.$store.state.current_reviewer.user_id + "/" + this.$store.getters.getPage_reviews_reviewer,
+          {}
+        );
+        if (response.data.length == 0) { //No hay más resultados
+          $state.complete();
+        } else {
+          this.$store.commit("addReviewsReviewer", response.data);
+          $state.loaded();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
 }
 </script>
