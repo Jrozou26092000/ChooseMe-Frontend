@@ -92,11 +92,11 @@
           @click="gotoProfile"
         >
           <v-list-item-icon>
-            <v-icon>mdi-wrench</v-icon>
+            <v-icon>mdi-account-circle</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>Configurar cuenta</v-list-item-title>
+            <v-list-item-title>Perfil</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
