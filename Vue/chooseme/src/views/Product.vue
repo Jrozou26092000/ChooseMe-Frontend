@@ -62,9 +62,111 @@
 
           <v-divider class="mx-4"></v-divider>
 
-          <v-card-title>ChooseMe</v-card-title>
-
           <v-card-text>
+            <v-row class="mb-2" justify=center>
+              <!-- Crear review: -->
+                <v-dialog
+                  v-model="dialog"
+                  persistent
+                  max-width="50%"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="#102f85"
+                      dark
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      Crear review
+                    </v-btn>
+                  </template>
+                  <v-card v-if="$store.state.logged">
+                    <v-card-title>
+                      <span class="text-h5">Crear una crítica</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                           <v-col
+                            cols="12"
+                          >
+                            <v-textarea
+                              outlined
+                              name="comentar"
+                              label="Comentario"
+                              counter = 400
+                              v-model="comment"
+                              :rules="[v => (v || '' ).length <= 400 || 'El comentario debe ser de 400 comentario o menos.']"
+                            ></v-textarea>
+                          </v-col>
+                          <v-col cols=12>
+                            <v-rating
+                              v-model="rating"
+                              color="yellow darken-3"
+                              background-color="grey darken-1"
+                              empty-icon="$ratingFull"
+                              half-increments
+                              hover
+                              large
+                            ></v-rating>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                      <small>*Por favor rellena todos los campos</small>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="red"
+                        text
+                        @click="dialog = false; comment='', rating=4.5"
+                      >
+                        Cerrar
+                      </v-btn>
+                      <v-btn
+                        color="#102f85"
+                        text
+                        @click="save"
+                      >
+                        Guardar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                  <v-card v-else>
+                    <v-card-title class="text-h5">
+                      ¿No puedes realizar una crítica?
+                    </v-card-title>
+                    <v-card-text>
+                      Los usuarios que no han iniciado sesión no pueden realizar críticas sobre los productos. 
+                      Si aún no tienes una cuenta puedes registrarte y empezar a comentar!
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="green darken-1"
+                        text
+                        @click="gotoSignin"
+                      >
+                        Registrarme
+                      </v-btn>
+                      <v-btn
+                        color="green darken-1"
+                        text
+                        @click="gotoLoggin"
+                      >
+                        Iniciar sesión
+                      </v-btn>
+                      <v-btn
+                        color="red"
+                        text
+                        @click="dialog = false"
+                      >
+                        Cerrar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+            </v-row>
           </v-card-text>
         </v-card>
         </v-col>
@@ -176,6 +278,24 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-snackbar
+      v-model="snackbar"
+      :multi-line="multiLine"
+      >
+        {{ message }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            :color="color"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
   </div>
 </template>
 
@@ -184,6 +304,17 @@ import axios from "axios";
 import TopHeader from "../components/TopHeader";
 import InfiniteLoading from "vue-infinite-loading";
 export default {
+  data (){
+    return {
+      dialog: false,
+      comment: "",
+      rating: 4.5,
+      snackbar: false,
+      message: "No puedes crear más de una review sobre el mismo producto",
+      color: "",
+      multiLine: true
+    }
+  },
   components: {
     "top-header": TopHeader,
     InfiniteLoading,
@@ -204,8 +335,66 @@ export default {
         }
       } catch (error) {
         console.log(error);
-      }
+      }      
     },
-  },
+    gotoLoggin(){
+        this.dialog = false;
+        this.$router.push("/login").catch(() => {});
+        window.scrollTo(0, 0);
+    },
+    gotoSignin(){
+      this.dialog = false;
+      this.$router.push("/signin").catch(() => {});
+      window.scrollTo(0, 0);
+    },
+    async save(){
+      if (this.comment.length > 400){
+        this.message = "La extensión del comentario no puede exceder los 400 caracteres";
+        this.color = "red";
+        this.snackbar = true;
+        return
+      }
+      this.loading = true;
+       try {
+        const response1 = await axios.post(
+          "http://localhost:8080/product/newreview",
+          {
+            comment: this.comment,
+            score: this.rating,
+            product_id: this.$store.state.current_product.product_id
+          },
+          {
+            headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+          }
+        );
+        // console.log(response1);
+        if (!response1.data) {
+          this.message = "No puedes crear más de una review sobre el mismo producto";
+          this.color = "red";
+          this.snackbar = true;
+          this.comment = "";
+          this.rating = 4.5;
+          this.dialog = false;
+        } else {
+          try {
+            const response = await axios.get(
+              "http://localhost:8080/review/" + this.$store.state.current_product.product_id + "/0",
+              {}
+            );
+            this.$store.commit("resetProduct_reviews", response.data);
+            this.$store.commit("resetPage_product_reviews");
+          } catch (error) {
+            console.log(error);
+          }
+          this.message = "Review creada!";
+          this.color = "green";
+          this.snackbar = true;
+        }
+        this.dialog = false;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 };
 </script>
