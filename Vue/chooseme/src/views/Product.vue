@@ -110,17 +110,6 @@
                               large
                             ></v-rating>
                           </v-col>
-                          <v-col
-                            cols="12"
-                          >
-                            <v-progress-linear
-                              :active="loading"
-                              :indeterminate="loading"
-                              absolute
-                              bottom
-                              color="#102f85"
-                            ></v-progress-linear>
-                          </v-col>
                         </v-row>
                       </v-container>
                       <small>*Por favor rellena todos los campos</small>
@@ -130,7 +119,7 @@
                       <v-btn
                         color="red"
                         text
-                        @click="dialog = false; loading=false; comment='', rating=4.5"
+                        @click="dialog = false; comment='', rating=4.5"
                       >
                         Cerrar
                       </v-btn>
@@ -289,6 +278,24 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-snackbar
+      v-model="snackbar"
+      :multi-line="multiLine"
+      >
+        {{ message }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            :color="color"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
   </div>
 </template>
 
@@ -300,9 +307,12 @@ export default {
   data (){
     return {
       dialog: false,
-      loading: false,
       comment: "",
-      rating: 4.5
+      rating: 4.5,
+      snackbar: false,
+      message: "No puedes crear más de una review sobre el mismo producto",
+      color: "",
+      multiLine: true
     }
   },
   components: {
@@ -337,16 +347,54 @@ export default {
       this.$router.push("/signin").catch(() => {});
       window.scrollTo(0, 0);
     },
-    save(){
+    async save(){
+      if (this.comment.length > 400){
+        this.message = "La extensión del comentario no puede exceder los 400 caracteres";
+        this.color = "red";
+        this.snackbar = true;
+        return
+      }
       this.loading = true;
+       try {
+        const response1 = await axios.post(
+          "http://localhost:8080/product/newreview",
+          {
+            comment: this.comment,
+            score: this.rating,
+            product_id: this.$store.state.current_product.product_id
+          },
+          {
+            headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+          }
+        );
+        // console.log(response1);
+        if (!response1.data) {
+          this.message = "No puedes crear más de una review sobre el mismo producto";
+          this.color = "red";
+          this.snackbar = true;
+          this.comment = "";
+          this.rating = 4.5;
+          this.dialog = false;
+        } else {
+          try {
+            const response = await axios.get(
+              "http://localhost:8080/review/" + this.$store.state.current_product.product_id + "/0",
+              {}
+            );
+            this.$store.commit("resetProduct_reviews", response.data);
+            this.$store.commit("resetPage_product_reviews");
+          } catch (error) {
+            console.log(error);
+          }
+          this.message = "Review creada!";
+          this.color = "green";
+          this.snackbar = true;
+        }
+        this.dialog = false;
+      } catch (error) {
+        console.log(error);
+      }
     }
-  },
-  watch: {
-    loading (val) {
-      if (!val || !this.dialog) return
-
-      setTimeout(() => (this.loading = false), 3000)
-    },
   }
 };
 </script>
