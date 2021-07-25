@@ -38,12 +38,149 @@
       </v-toolbar>
 
       <v-tabs-items v-model="model">
+
         <!-- Tab de mis reviews cuenta: (quitar variable text en data() más abajo) -->
         <v-tab-item
           value="tab-0"
         >
-          <v-card flat>
-            <v-card-text v-text="text"></v-card-text>
+          <v-card
+              class="mx-auto my-12"
+              color="#102f85"
+              dark
+              max-width="80%"
+              v-for="(review, index) in this.$store.state.reviews_reviewer" 
+              :key="index"
+          >
+          <!-- cambiar el v-for para los reviews del usuario en sesión -->
+              <v-card-title>
+              <v-icon
+                  large
+                  left
+              >
+                  mdi-check-circle
+              </v-icon>
+              <span class="title font-weight-light">ChooseMe</span>
+              </v-card-title>
+
+              <v-card-text>
+              <v-row class="mx-3 my-1">
+                  <div class="font-weight-bold" style="text-align: justify;font-size: 120%;">"{{review.comment}}"</div>
+              </v-row>
+              <v-row class="ml-3 mt-5">
+                  <div>Calificación: ({{review.score}})
+                  <v-tooltip right>
+                      <template v-slot:activator="{ on, attrs }">
+                      <v-icon v-bind="attrs" v-on="on" medium>mdi-information</v-icon>
+                      </template>
+                      <span>Las calificaciones de las críticas estan en una escala de 1-5.</span>
+                  </v-tooltip>
+                  </div>
+                  </v-row>
+                  <v-row class="ml-3">
+                  <div>Creado: {{review.created_at.substring(0, 10)}}</div>
+                  </v-row>
+              </v-card-text>
+
+              <v-card-actions>
+              <v-list-item class="grow">
+                  <v-list-item-avatar rounded=0>
+                  <v-img
+                      elevation = 6
+                      alt=""
+                      src="@/assets/paquete.png"
+                  ></v-img>
+                  </v-list-item-avatar>
+
+                  <v-list-item-content>
+                  <v-list-item-title>{{review.product_name}}</v-list-item-title>
+                  </v-list-item-content>
+
+                  <v-row
+                  align="center"
+                  justify="end"
+                  >
+                  <v-btn icon>
+                      <v-icon class="mr-2">
+                      mdi-thumb-up
+                      </v-icon>
+                  </v-btn>
+                  <span class="subheading mr-2">256</span>
+                  <span class="mr-1">·</span>
+                  <v-btn icon>
+                      <v-icon class="mr-2">
+                      mdi-thumb-down
+                      </v-icon>
+                  </v-btn>
+                  <span class="subheading">45</span>
+                  </v-row>
+              </v-list-item>
+              </v-card-actions>
+
+              <v-card-actions>
+                <v-btn
+                  text
+                  color="blue lighten-3"
+                  @click="showReview = !showReview, comment='', rating=4.5"
+                >
+                  {{ showReview ? "Cancelar" : "Actualizar información"}}
+                </v-btn>
+
+                <v-btn
+                  text
+                  @click="showReview = !showReview"
+                >
+                  Eliminar Review
+                </v-btn>
+              </v-card-actions>
+          
+              <v-expand-transition>
+                <v-card v-if="showReview">
+                    <v-card-title>
+                      <span class="text-h5">Crear una crítica</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                           <v-col
+                            cols="12"
+                          >
+                            <v-textarea
+                              outlined
+                              name="comentar"
+                              label="Comentario"
+                              counter = 400
+                              v-model="comment"
+                              :rules="[v => (v || '' ).length <= 400 || 'El comentario debe ser de 400 comentario o menos.']"
+                            ></v-textarea>
+                          </v-col>
+                          <v-col cols=12>
+                            <v-rating
+                              v-model="rating"
+                              color="yellow darken-3"
+                              background-color="grey darken-1"
+                              empty-icon="$ratingFull"
+                              half-increments
+                              hover
+                              large
+                            ></v-rating>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                      <small>*Por favor rellena todos los campos</small>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="blue lighten-4"
+                        text
+                        @click="save"
+                      >
+                        Guardar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+              </v-expand-transition>
+
           </v-card>
         </v-tab-item>
 
@@ -514,8 +651,10 @@ export default {
       delete_pass_conf: "",
       // PRUEBA:
       model: 'tab-0',
-      text: 'Lorem',
       tabs: ['Mis críticas', 'Actualizar cuenta', 'Desactivar cuenta', 'Eliminar cuenta'],
+      showReview: false,
+      comment: "",
+      rating: 4.5,
     };
   },
   async mounted() {
