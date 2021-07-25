@@ -156,7 +156,7 @@ export default{
       this.$store.commit("incrementPage_reviews_reviewer");
       try {
         const response = await axios.get(
-          "http://localhost:8080/review/"+ this.$store.state.current_reviewer.user_id + "/" + this.$store.getters.getPage_reviews_reviewer,
+          "http://localhost:8080/user/review/"+ this.$store.state.current_reviewer.user_id + "/" + this.$store.getters.getPage_reviews_reviewer,
           {}
         );
         if (response.data.length == 0) { //No hay más resultados

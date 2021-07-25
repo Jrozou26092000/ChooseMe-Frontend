@@ -65,7 +65,7 @@ export default new Vuex.Store({
       state.page_reviewers = 0;
     },
     incrementPage_reviewers(state) {
-      state.page_reviewers += 10;
+      state.page_reviewers += 1;
     },
     setTop5(state, top5){
       state.top5 = top5;
@@ -90,7 +90,7 @@ export default new Vuex.Store({
     },
 
     incrementPage_reviews_reviewer(state){
-      state.page_reviews_reviewer += 10;
+      state.page_reviews_reviewer += 1;
     }
   },
   actions: {},
