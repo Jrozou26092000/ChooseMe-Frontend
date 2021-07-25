@@ -18,7 +18,7 @@
 
         <v-spacer></v-spacer>
 
-        <v-toolbar-title class="mt-5">Puntuación: 200000</v-toolbar-title>
+        <v-toolbar-title class="mt-5">Puntuación: {{this.puntos}}</v-toolbar-title>
 
         <template v-slot:extension>
           <v-tabs
@@ -494,6 +494,7 @@ export default {
       success: false,
       mensaje: "",
       user: "",
+      puntos: 0,
       //Datos de desactivación de cuenta
       form: {
         passwordDesact: "",
@@ -535,6 +536,7 @@ export default {
     this.nombre = this.user.name;
     this.apellido = this.user.lastname;
     this.nombre_usuario = this.user.user_name;
+    this.puntos = this.user.points;
     // this.telefono = this.user.phone;
     // this.correo = this.user.email;
   },
