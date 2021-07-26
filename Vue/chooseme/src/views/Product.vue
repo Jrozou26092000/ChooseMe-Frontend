@@ -231,14 +231,14 @@
                       mdi-thumb-up
                     </v-icon>
                   </v-btn>
-                  <span class="subheading mr-2">{{review.ups + likes}}</span>
+                  <span class="subheading mr-2">{{review.ups}}</span>
                   <span class="mr-1">·</span>
                   <v-btn icon @click="reaction(review,-1)">
                     <v-icon class="mr-2">
                       mdi-thumb-down
                     </v-icon>
                   </v-btn>
-                  <span class="subheading">{{review.downs + dislikes}}</span>
+                  <span class="subheading">{{review.downs}}</span>
                 </v-row>
               </v-list-item>
             </v-card-actions>
@@ -357,8 +357,6 @@ export default {
       message: "No puedes crear más de una review sobre el mismo producto",
       color: "",
       multiLine: true,
-      likes: 0,
-      dislikes: 0,
       reviewActualizaciones: [],
       botonActualizaciones: false
     }

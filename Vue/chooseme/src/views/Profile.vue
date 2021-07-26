@@ -503,6 +503,24 @@
       </v-btn>
     </v-dialog>
 
+    <v-snackbar
+      v-model="snackbar"
+      :multi-line="multiLine"
+      >
+        {{ adErase }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            :color="color"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+
   </div>
 </template>
 
@@ -555,6 +573,10 @@ export default {
       reviewActualizacionId: "",
       reviewActualizaciones: [],
       botonActualizaciones: false,
+      adErase: "",
+      snackbar: false,
+      multiLine: true,
+      color: "error",
     };
   },
   async mounted() {
@@ -774,11 +796,20 @@ export default {
         );
         if(response.data === true){
           console.log("Eliminado correctamente");
+          this.adErase = "Eliminado correctamente";
+          this.snackbar = true;
+          this.color = "success";
         }else{
           console.log("No eliminado");
+          this.adErase = "No pudo ser eliminado";
+          this.snackbar = true;
+          this.color = "error";
         }
       } catch (error) {
         console.log(error);
+        this.adErase = "No pudo ser eliminado";
+        this.snackbar = true;
+        this.color = "error";
       } 
       this.eliminacion = "";
       this.dialog = false;
