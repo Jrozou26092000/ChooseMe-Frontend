@@ -242,6 +242,17 @@
                 </v-row>
               </v-list-item>
             </v-card-actions>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+              color="indigo darken-2"
+              dark
+              @click="ConsultaActualizaciones(review)"
+              >
+                  Consultar actualizaciones
+              </v-btn>
+            </v-card-actions>
           </v-card>
           <infinite-loading @infinite="getReviews" class="mt-5">
             <div slot="waveDots">
@@ -296,6 +307,39 @@
           </v-btn>
         </template>
       </v-snackbar>
+
+      <v-dialog
+            v-model="botonActualizaciones"
+            persistent
+            max-width="80%"
+      >
+        <v-card>
+            <v-list two-line>
+            <template v-for="(review) in this.reviewActualizaciones">
+                <v-divider
+                :key="review.impression_id"
+                >
+                </v-divider>
+                <v-list-item
+                :key="review.impression_id"
+                >
+                <v-list-item-content>
+                    <v-list-item-title v-html="review.impression"></v-list-item-title>
+                    <v-list-item-subtitle>Creado el: {{review.created_at.substring(0, 10)}} </v-list-item-subtitle>
+                </v-list-item-content>
+                </v-list-item>
+            </template>
+            </v-list>
+        </v-card>
+
+        <v-btn
+            color="error"
+            @click="botonActualizaciones = false"
+        >
+            Cerrar
+        </v-btn>
+       </v-dialog>
+
   </div>
 </template>
 
@@ -314,7 +358,9 @@ export default {
       color: "",
       multiLine: true,
       likes: 0,
-      dislikes: 0
+      dislikes: 0,
+      reviewActualizaciones: [],
+      botonActualizaciones: false
     }
   },
   components: {
@@ -434,7 +480,11 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    },
+    ConsultaActualizaciones(review){
+        this.reviewActualizaciones = review.impressions;
+        this.botonActualizaciones = true;
+    },
   }
 };
 </script>

@@ -104,14 +104,14 @@
                       mdi-thumb-up
                       </v-icon>
                   </v-btn>
-                  <span class="subheading mr-2">256</span>
+                  <span class="subheading mr-2">{{review.ups}}</span>
                   <span class="mr-1">·</span>
                   <v-btn icon>
                       <v-icon class="mr-2">
                       mdi-thumb-down
                       </v-icon>
                   </v-btn>
-                  <span class="subheading">45</span>
+                  <span class="subheading">{{review.downs}}</span>
                   </v-row>
               </v-list-item>
               </v-card-actions>
@@ -496,8 +496,7 @@
       </v-card>
 
       <v-btn
-          color="red"
-          text
+          color="error"
           @click="botonActualizaciones = false"
         >
         Cerrar
@@ -800,10 +799,10 @@ export default {
             headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           }
         );
-        if(response.data === true){
-          console.log("Eliminado correctamente");
+        if(response.data === "ok"){
+          console.log("Actualizado correctamente");
         }else{
-          console.log("No eliminado");
+          console.log("No actualizado");
         }
       } catch (error) {
         console.log(error);
