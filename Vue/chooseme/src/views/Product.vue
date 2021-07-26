@@ -226,19 +226,19 @@
                   align="center"
                   justify="end"
                 >
-                  <v-btn icon>
+                  <v-btn icon @click="reaction(review,1)">
                     <v-icon class="mr-2">
                       mdi-thumb-up
                     </v-icon>
                   </v-btn>
-                  <span class="subheading mr-2">256</span>
+                  <span class="subheading mr-2">{{review.ups + likes}}</span>
                   <span class="mr-1">·</span>
-                  <v-btn icon>
+                  <v-btn icon @click="reaction(review,-1)">
                     <v-icon class="mr-2">
                       mdi-thumb-down
                     </v-icon>
                   </v-btn>
-                  <span class="subheading">45</span>
+                  <span class="subheading">{{review.downs + dislikes}}</span>
                 </v-row>
               </v-list-item>
             </v-card-actions>
@@ -312,7 +312,9 @@ export default {
       snackbar: false,
       message: "No puedes crear más de una review sobre el mismo producto",
       color: "",
-      multiLine: true
+      multiLine: true,
+      likes: 0,
+      dislikes: 0
     }
   },
   components: {
@@ -346,6 +348,44 @@ export default {
       this.dialog = false;
       this.$router.push("/signin").catch(() => {});
       window.scrollTo(0, 0);
+    },
+    async reaction(review, option) {
+      if (!this.$store.state.logged) {
+        this.message = "Para reaccionar a los comentarios debes tener una cuenta!";
+        this.color = "red";
+        this.snackbar = true;
+        return
+      }
+      try {
+        const response = await axios.post("http://localhost:8080/users/like",
+        {
+          "comment_id": review.comment_id,
+          "up_down": option
+        },
+        {
+            headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        });
+        if ((response.data == "Nuevo like") && (option == 1)) {
+          review.ups = review.ups + 1;
+        } else if ((response.data == "Nuevo dislike") && (option == -1)) {
+          review.downs = review.downs + 1;
+        } else if ((response.data == "Ya le había dado like") && (option == 1)) {
+          review.ups = review.ups - 1;
+        } else if ((response.data == "Ya le había dado like") && (option == -1)) {
+          review.ups = review.ups - 1;
+          review.downs = review.downs + 1;
+        } else if ((response.data == "Ya le había dado dislike") && (option == 1)) {
+          review.ups = review.ups + 1;
+          review.downs = review.downs - 1;
+        } else if ((response.data == "Ya le había dado dislike") && (option == -1)) {
+          review.downs = review.downs - 1;
+        }
+        this.message = "Reacción guardada!";
+        this.color = "green";
+        this.snackbar = true;
+      } catch (error) {
+          console.log(error);
+      }
     },
     async save(){
       if (this.comment.length > 400){
