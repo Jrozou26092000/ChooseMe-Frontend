@@ -86,22 +86,17 @@
                             align="center"
                             justify="end"
                             >
-                            <v-btn icon>
-                                <v-icon class="mr-2">
-                                mdi-thumb-up
-                                </v-icon>
-                            </v-btn>
-                            <span class="subheading mr-2">256</span>
-                            <span class="mr-1">·</span>
-                            <v-btn icon>
-                                <v-icon class="mr-2">
-                                mdi-thumb-down
-                                </v-icon>
-                            </v-btn>
-                            <span class="subheading">45</span>
+                                <v-btn
+                                color="indigo darken-2"
+                                dark
+                                @click="ConsultaActualizaciones(review)"
+                                >
+                                    Consultar actualizaciones
+                                </v-btn>
                             </v-row>
                         </v-list-item>
                         </v-card-actions>
+
                     </v-card>
                     <infinite-loading @infinite="getReviewsReviewer" class="mt-5">
                         <div slot="waveDots">
@@ -138,6 +133,39 @@
                 </v-col>
             </v-row>
         </v-container>
+
+        <v-dialog
+            v-model="botonActualizaciones"
+            persistent
+            max-width="80%"
+        >
+
+            <v-card>
+                <v-list two-line>
+                <template v-for="(review) in this.reviewActualizaciones">
+                    <v-divider
+                    :key="review.impression_id"
+                    >
+                    </v-divider>
+                    <v-list-item
+                    :key="review.impression_id"
+                    >
+                    <v-list-item-content>
+                        <v-list-item-title v-html="review.impression"></v-list-item-title>
+                        <v-list-item-subtitle>Creado el: {{review.created_at.substring(0, 10)}} </v-list-item-subtitle>
+                    </v-list-item-content>
+                    </v-list-item>
+                </template>
+                </v-list>
+            </v-card>
+
+            <v-btn
+                color="error"
+                @click="botonActualizaciones = false"
+            >
+                Cerrar
+            </v-btn>
+        </v-dialog>
     </div>
 </template>
 
@@ -147,6 +175,12 @@ import TopHeader from "../components/TopHeader";
 import InfiniteLoading from "vue-infinite-loading";
 
 export default{
+    data(){
+        return{
+            reviewActualizaciones: [],
+            botonActualizaciones: false,
+        };
+    },
     components: {
         "top-header": TopHeader,
         InfiniteLoading
@@ -168,6 +202,10 @@ export default{
       } catch (error) {
         console.log(error);
       }
+    },
+    ConsultaActualizaciones(review){
+        this.reviewActualizaciones = review.impressions;
+        this.botonActualizaciones = true;
     },
   },
 }
