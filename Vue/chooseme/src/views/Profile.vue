@@ -48,7 +48,7 @@
               color="#102f85"
               dark
               max-width="80%"
-              v-for="(review, index) in this.$store.state.reviews_reviewer" 
+              v-for="(review, index) in this.$store.state.reviews_user" 
               :key="index"
           >
           <!-- cambiar el v-for para los reviews del usuario en sesión -->
@@ -118,25 +118,36 @@
 
               <v-card-actions>
                 <v-btn
-                  text
-                  color="blue lighten-3"
-                  @click="showReview = !showReview, comment='', rating=4.5"
+                  class="ma-2"
+                  color="blue"
+                  @click="indicadorActualizacion(index)"
                 >
-                  {{ showReview ? "Cancelar" : "Actualizar información"}}
-                </v-btn>
+                  {{ showReview === index ? "Cancelar" : "Actualizar información"}}
+                </v-btn> 
 
                 <v-btn
-                  text
-                  @click="showReview = !showReview"
+                  color="red"
+                  dark
+                  @click="eliminarReview(review)"
                 >
-                  Eliminar Review
+                  Eliminar crítica
+                </v-btn>
+
+                <v-spacer></v-spacer>
+
+                <v-btn
+                  color="indigo darken-2"
+                  dark
+                  @click="ConsultaActualizaciones(review)"
+                >
+                  Consultar actualizaciones
                 </v-btn>
               </v-card-actions>
-          
+
               <v-expand-transition>
-                <v-card v-if="showReview">
+                <v-card v-if = "showReview === index">
                     <v-card-title>
-                      <span class="text-h5">Crear una crítica</span>
+                      <span class="text-h5">Actualiza tu crítica</span>
                     </v-card-title>
                     <v-card-text>
                       <v-container>
@@ -153,17 +164,6 @@
                               :rules="[v => (v || '' ).length <= 400 || 'El comentario debe ser de 400 comentario o menos.']"
                             ></v-textarea>
                           </v-col>
-                          <v-col cols=12>
-                            <v-rating
-                              v-model="rating"
-                              color="yellow darken-3"
-                              background-color="grey darken-1"
-                              empty-icon="$ratingFull"
-                              half-increments
-                              hover
-                              large
-                            ></v-rating>
-                          </v-col>
                         </v-row>
                       </v-container>
                       <small>*Por favor rellena todos los campos</small>
@@ -173,15 +173,49 @@
                       <v-btn
                         color="blue lighten-4"
                         text
-                        @click="save"
+                        @click="actualizarReview(review,index)"
                       >
                         Guardar
                       </v-btn>
                     </v-card-actions>
                   </v-card>
-              </v-expand-transition>
+              </v-expand-transition> 
 
           </v-card>
+
+          <infinite-loading @infinite="getReviewsUser" class="mt-5">
+                        <div slot="waveDots">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> Cargando... </strong>
+                            </v-alert>
+                        </div>
+                        <div slot="no-more">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> No hay más resultados </strong>
+                            </v-alert>
+                        </div>
+                        <div slot="no-results">
+                            <v-alert
+                            elevation="4"
+                            color="#283593"
+                            dense
+                            type="info"
+                            >
+                                <strong> No hay más resultados </strong>
+                            </v-alert>
+                        </div>
+                    </infinite-loading>
+
         </v-tab-item>
 
         <!-- Tab de actualizar cuenta:  -->
@@ -399,224 +433,85 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
-    <!-- <b-card no-body class="m-5" align="left">
-      <b-tabs
-        pills
-        card
-        vertical
-        nav-wrapper-class="w-25"
-        style="height: 500px"
-      >
-        <b-tab title="Actualizar cuenta" active>
-          <b-container class="bv-example-row">
-            <b-row class="pb-3">
-              <b-col>
-                <label for="name">Nombre:</label>
-                <b-form-input v-model="nombre" id="name"></b-form-input>
-              </b-col>
-              <b-col>
-                <label for="last_name">Apellido:</label>
-                <b-form-input v-model="apellido" id="last_name"></b-form-input>
-              </b-col>
-            </b-row>
-            <b-row class="pb-3">
-              <b-col>
-                <label for="user_name">Nombre de usuario:</label>
-                <b-form-input
-                  v-model="nombre_usuario"
-                  id="user_name"
-                ></b-form-input>
-              </b-col>
-            </b-row>
-            <b-row class="pb-3">
-              <b-col>
-                <label for="new_password">Contraseña nueva:</label>
-                <b-form-input
-                  v-model="nueva_pass"
-                  type="password"
-                  id="new_password"
-                ></b-form-input>
-              </b-col>
-              <b-col>
-                <label for="new_password_conf"
-                  >Confirmar contraseña nueva:</label
-                >
-                <b-form-input
-                  v-model="nueva_pass_conf"
-                  type="password"
-                  id="new_password_conf"
-                ></b-form-input>
-              </b-col>
-            </b-row>
-            <b-row class="pt-4">
-              <b-col>
-                <b-form-input
-                  v-model="pass"
-                  type="password"
-                  placeholder="Digita tu contraseña actual"
-                ></b-form-input>
-              </b-col>
-              <b-col>
-                <b-button @click="save">Guardar cambios</b-button>
-              </b-col>
-            </b-row>
-          </b-container>
-          <b-alert
-            variant="danger"
-            dismissible
-            fade
-            :show="error"
-            @dismissed="error = false"
-            class="mt-3"
+
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="25%"
+    >
+      <v-card>
+        <v-card-title class="text-h5">
+          ¿Deseas eliminar la crítica realizada?
+        </v-card-title>
+        <v-card-text>Una vez eliminada una crítica no podrá restaurarse, y toda la información contenida en ella será eliminada. Por favor confirma tu identidad para poder eliminar la crítica.</v-card-text>
+        
+        <v-card-actions>
+        <label class="font-weight-medium" for="eliminar">Contraseña:</label>
+        <b-form-input v-model="eliminacion" type="password" id="eliminar"></b-form-input>
+        </v-card-actions>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="red"
+            text
+            @click="eliminarReviewDef"
           >
-            {{ mensaje }}
-          </b-alert>
-          <b-alert
-            variant="success"
-            dismissible
-            fade
-            :show="success"
-            @dismissed="success = false"
-            class="mt-3"
-            >{{ mensaje }}</b-alert
+            Eliminar
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="OnCancel"
           >
-        </b-tab>
-        <b-tab title="Desactivar mi cuenta">
-          <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-            <b-form-group
-              id="input-group-1"
-              label="Contraseña:"
-              label-for="input-1"
-              description="Recordatorio: Choose Me jamás te pedirá tus credenciales por fuera de la página."
-            >
-              <b-form-input
-                id="input-1"
-                v-model="form.passwordDesact"
-                type="password"
-                placeholder="Introduce tu contraseña"
-                required
-              ></b-form-input>
-            </b-form-group>
+            Cancelar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
-            <b-form-group
-              id="input-group-2"
-              label="Por favor verifica tu contraseña:"
-              label-for="input-2"
-            >
-              <b-form-input
-                id="input-2"
-                v-model="form.passwordDesactAgain"
-                type="password"
-                placeholder="Introduce nuevamente tu contraseña"
-                required
-              ></b-form-input>
-            </b-form-group>
+    <v-dialog
+      v-model="botonActualizaciones"
+      persistent
+      max-width="80%"
+    >
 
-            <b-form-group
-              id="input-group-3"
-              label="¿Por qué quieres desactivar tu cuenta?:"
-              label-for="input-3"
+      <v-card>
+        <v-list two-line>
+          <template v-for="(review) in this.reviewActualizaciones">
+            <v-divider
+            :key="review.impression_id"
             >
-              <b-form-select
-                id="input-3"
-                v-model="form.OptionsDesact"
-                :options="Optionsdesacts"
-                required
-              ></b-form-select>
-            </b-form-group>
+            </v-divider>
+            <v-list-item
+              :key="review.impression_id"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-html="review.impression"></v-list-item-title>
+                <v-list-item-subtitle>Creado el: {{review.created_at.substring(0, 10)}} </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+        </v-list>
+      </v-card>
 
-            <br />
+      <v-btn
+          color="red"
+          text
+          @click="botonActualizaciones = false"
+        >
+        Cerrar
+      </v-btn>
+    </v-dialog>
 
-            <b-form-checkbox
-              id="checkbox-1"
-              name="checkbox-1"
-              value="accepted"
-              unchecked-value="not_accepted"
-            >
-              Confirmación de desactivación de cuenta, te extrañaremos :(
-            </b-form-checkbox>
-
-            <br /><br />
-
-            <b-button class="mr-3" type="submit" variant="primary"
-              >Aceptar</b-button
-            >
-            <b-button type="reset" variant="danger">Reset</b-button>
-          </b-form>
-          <b-alert
-            variant="danger"
-            dismissible
-            fade
-            :show="error"
-            @dismissed="error = false"
-            class="mt-3"
-          >
-            {{ mensaje }}
-          </b-alert>
-          <b-alert
-            variant="success"
-            dismissible
-            fade
-            :show="success"
-            @dismissed="success = false"
-            class="mt-3"
-            >{{ mensaje }}</b-alert
-          >
-        </b-tab>
-        <b-tab title="Eliminar mi cuenta">
-          <b-form>
-            <b-form-group
-              id="delete-1"
-              label="Contraseña:"
-              label-for="delete-1"
-              description="Recordatorio: Una vez elimines tu cuenta no será posible recuperarla, tus datos se
-              borrarán de la aplicación y tus reviews y comentarios quedarán anónimos."
-            >
-              <b-form-input
-                id="delete-1"
-                v-model="delete_pass"
-                type="password"
-                placeholder="Introduce tu contraseña"
-                required
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-              id="delete-2"
-              label="Por favor verifica tu contraseña:"
-              label-for="delete-2"
-            >
-              <b-form-input
-                id="delete-2"
-                v-model="delete_pass_conf"
-                type="password"
-                placeholder="Introduce nuevamente tu contraseña"
-                required
-              ></b-form-input>
-            </b-form-group>
-            <b-button @click="deleteAccount" variant="danger"
-              >Eliminar</b-button
-            >
-          </b-form>
-          <b-alert
-            variant="danger"
-            dismissible
-            fade
-            :show="error"
-            @dismissed="error = false"
-            class="mt-3"
-          >
-            {{ mensaje }}
-          </b-alert>
-        </b-tab>
-      </b-tabs>
-    </b-card> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import TopHeader from "../components/TopHeader";
+import InfiniteLoading from "vue-infinite-loading";
+
 export default {
   data() {
     return {
@@ -632,6 +527,7 @@ export default {
       mensaje: "",
       user: "",
       puntos: 0,
+      id: 0,
       //Datos de desactivación de cuenta
       form: {
         passwordDesact: "",
@@ -652,9 +548,14 @@ export default {
       // PRUEBA:
       model: 'tab-0',
       tabs: ['Mis críticas', 'Actualizar cuenta', 'Desactivar cuenta', 'Eliminar cuenta'],
-      showReview: false,
+      showReview: "",
       comment: "",
-      rating: 4.5,
+      dialog: false,
+      eliminacion: "",
+      reviewEliminacion: "",
+      reviewActualizacionId: "",
+      reviewActualizaciones: [],
+      botonActualizaciones: false,
     };
   },
   async mounted() {
@@ -668,6 +569,7 @@ export default {
         }
       );
       this.user = response.data;
+
       //this.$store.state.tab = 'rulet';
     } catch (error) {
       console.log(error);
@@ -676,8 +578,24 @@ export default {
     this.apellido = this.user.lastname;
     this.nombre_usuario = this.user.user_name;
     this.puntos = this.user.points;
+    this.id = this.user.user_id;
     // this.telefono = this.user.phone;
     // this.correo = this.user.email;
+
+    try {
+        this.$store.commit("resetPage_reviews_user");
+        this.$store.commit("resetReviews_user");
+
+        const response = await axios.get(
+          "http://localhost:8080/user/review/"+ this.id + "/0",
+          {}
+        );
+        this.$store.commit("addReviews_user", response.data);
+
+      } catch (error) {
+        console.log(error);
+      }
+
   },
 
   methods: {
@@ -814,9 +732,92 @@ export default {
         }
       }
     },
+    async getReviewsUser($state) {
+      this.$store.commit("incrementPage_reviews_user");
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/user/review/"+ this.id + "/" + this.$store.getters.getPage_reviews_user,
+          {}
+        );
+        if (response.data.length == 0) { //No hay más resultados
+          $state.complete();
+        } else {
+          this.$store.commit("addReviews_user", response.data);
+
+          $state.loaded();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    indicadorActualizacion(index){
+      if(this.showReview === index){
+        this.showReview = "";
+      }else{
+        this.showReview = index;
+      }
+    },
+    eliminarReview(review){
+      this.dialog = true;
+      this.reviewEliminacion = review.comment_id;
+    },
+    async eliminarReviewDef(){
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/products/delete/"+ this.reviewEliminacion,
+          {
+            "password":this.eliminacion
+          },
+          {
+            headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+          }
+        );
+        if(response.data === true){
+          console.log("Eliminado correctamente");
+        }else{
+          console.log("No eliminado");
+        }
+      } catch (error) {
+        console.log(error);
+      } 
+      this.eliminacion = "";
+      this.dialog = false;
+    },
+    OnCancel(){
+      this.eliminacion = "";
+      this.dialog = false;
+    },
+    async actualizarReview(review,index){
+      this.reviewActualizacionId = review.comment_id;
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/review/update",
+          {
+            "impression":this.comment, "user_id":this.id, "comment_id":this.reviewActualizacionId
+          },
+          {
+            headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+          }
+        );
+        if(response.data === true){
+          console.log("Eliminado correctamente");
+        }else{
+          console.log("No eliminado");
+        }
+      } catch (error) {
+        console.log(error);
+      } 
+      this.indicadorActualizacion(index);
+    },
+    ConsultaActualizaciones(review){
+      this.reviewActualizaciones = review.impressions;
+      this.botonActualizaciones = true;
+    }
   },
   components: {
     "top-header": TopHeader,
+    InfiniteLoading
   },
 };
 </script>
