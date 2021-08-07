@@ -138,6 +138,7 @@
                 <v-btn
                   color="indigo darken-2"
                   dark
+                  :disabled = "review.impressions.length == 0"
                   @click="ConsultaActualizaciones(review)"
                 >
                   Consultar actualizaciones
