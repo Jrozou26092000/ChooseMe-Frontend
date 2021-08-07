@@ -140,9 +140,26 @@ export default {
           phone: this.form.phone,
         });
         if (response.data) {
-          this.color = "green"
+          /* this.color = "green"
           this.snackbar = true;
-          this.message = "Bienvenido a ChooseMe!"
+          this.message = "Bienvenido a ChooseMe!" */
+
+          // Reset our form values
+          this.form.user = "";
+          this.form.email = "";
+          this.form.name = "";
+          this.form.lastname = "";
+          this.form.phone = "";
+          this.form.password = "";
+          this.form.passwordagain = "";
+          // Trick to reset/clear native browser form validation state
+          this.show = false;
+          this.$nextTick(() => {
+            this.show = true;
+          });
+
+          this.$router.push("/login").catch(() => {});
+          window.scrollTo(0, 0);
         } else {
           this.color = "red"
           this.snackbar = true;
@@ -154,19 +171,6 @@ export default {
         this.message = "Datos inválidos, inténtalo de nuevo."
         console.log(error);
       }
-      // Reset our form values
-      this.form.user = "";
-      this.form.email = "";
-      this.form.name = "";
-      this.form.lastname = "";
-      this.form.phone = "";
-      this.form.password = "";
-      this.form.passwordagain = "";
-      // Trick to reset/clear native browser form validation state
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
     },
   },
   components: {

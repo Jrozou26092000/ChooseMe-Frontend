@@ -50,7 +50,7 @@
             color="red"
             text
             v-bind="attrs"
-            @click="snackbar = false"
+            @click="redirectToSignIn"
           >
             Close
           </v-btn>
@@ -108,7 +108,12 @@ export default {
       this.$nextTick(() => {
         this.show = true;
       });
-    },
+    } ,
+    redirectToSignIn(){
+      this.snackbar = false
+      this.$router.push("/login").catch(() => {});
+      window.scrollTo(0, 0);
+    }, 
   },
   components: {
     "top-header": TopHeader,
