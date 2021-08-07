@@ -64,7 +64,6 @@
 
           <v-card-text>
             <v-row class="mb-2" justify=center>
-              <!-- Crear review: -->
                 <v-dialog
                   v-model="dialog"
                   persistent
@@ -451,7 +450,6 @@ export default {
             headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           }
         );
-        // console.log(response1);
         if (!response1.data) {
           this.message = "No puedes crear más de una review sobre el mismo producto";
           this.color = "red";

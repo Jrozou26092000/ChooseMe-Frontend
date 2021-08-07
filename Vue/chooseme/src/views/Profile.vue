@@ -590,8 +590,6 @@ export default {
         }
       );
       this.user = response.data;
-
-      //this.$store.state.tab = 'rulet';
     } catch (error) {
       console.log(error);
     }
@@ -600,8 +598,6 @@ export default {
     this.nombre_usuario = this.user.user_name;
     this.puntos = this.user.points;
     this.id = this.user.user_id;
-    // this.telefono = this.user.phone;
-    // this.correo = this.user.email;
 
     try {
         this.$store.commit("resetPage_reviews_user");
