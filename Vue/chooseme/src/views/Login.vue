@@ -73,7 +73,7 @@ export default {
       show: true,
       multiLine: true,
       snackbar: false,
-      message: `Emalil o contraseña incorrectos.`
+      message: `Email o contraseña incorrectos.`
     };
   },
   methods: {

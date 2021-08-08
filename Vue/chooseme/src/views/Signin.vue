@@ -140,9 +140,6 @@ export default {
           phone: this.form.phone,
         });
         if (response.data) {
-          /* this.color = "green"
-          this.snackbar = true;
-          this.message = "Bienvenido a ChooseMe!" */
 
           // Reset our form values
           this.form.user = "";
