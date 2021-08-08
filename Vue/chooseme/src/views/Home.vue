@@ -1,5 +1,20 @@
 <template>
-  <div class="home">
-    <h1>This is a home page</h1>
+  <div class="home" :key="$store.state.logged">
+    <top-header @header_message = "option = $event"></top-header>
+    <rulet />
+    <foot />
   </div>
 </template>
+
+<script>
+  import TopHeader from '../components/TopHeader';
+  import Rulet from '../components/Rulet';
+  import Footer from '../components/Footer';
+  export default {
+    components: {
+      "top-header": TopHeader, 
+      "rulet": Rulet, 
+      "foot": Footer
+    }
+  }
+</script>
