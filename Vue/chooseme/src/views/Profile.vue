@@ -392,8 +392,8 @@
               id="delete-1"
               label="Contraseña:"
               label-for="delete-1"
-              description="Recordatorio: Una vez elimines tu cuenta no será posible recuperarla, tus datos se
-              borrarán de la aplicación y tus reviews y comentarios quedarán anónimos."
+              description="Recordatorio: Una vez elimines tu cuenta no será posible recuperarla, todos tus datos se
+              borrarán de la aplicación."
             >
               <b-form-input
                 id="delete-1"
@@ -792,12 +792,10 @@ export default {
           }
         );
         if(response.data === true){
-          console.log("Eliminado correctamente");
           this.adErase = "Eliminado correctamente";
           this.snackbar = true;
           this.color = "success";
         }else{
-          console.log("No eliminado");
           this.adErase = "No pudo ser eliminado";
           this.snackbar = true;
           this.color = "error";
@@ -818,7 +816,7 @@ export default {
     async actualizarReview(review,index){
       this.reviewActualizacionId = review.comment_id;
       try {
-        const response = await axios.post(
+        await axios.post(
           "http://localhost:8080/review/update",
           {
             "impression":this.comment, "user_id":this.id, "comment_id":this.reviewActualizacionId
@@ -827,11 +825,6 @@ export default {
             headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           }
         );
-        if(response.data === "ok"){
-          console.log("Actualizado correctamente");
-        }else{
-          console.log("No actualizado");
-        }
       } catch (error) {
         console.log(error);
       } 

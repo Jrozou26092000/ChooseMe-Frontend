@@ -469,6 +469,15 @@ export default {
           } catch (error) {
             console.log(error);
           }
+          try {
+            const response = await axios.get(
+              "http://localhost:8080/product/" + this.$store.state.current_product.product_id,
+              {}
+            );
+            this.$store.commit("setCurrent_product", response.data);
+          } catch (error) {
+            console.log(error);
+          }
           this.message = "Review creada!";
           this.color = "green";
           this.snackbar = true;

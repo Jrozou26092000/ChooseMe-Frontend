@@ -43,7 +43,6 @@ export default new Vuex.Store({
         }
         return 0;
       })
-      console.log(state.products);
     },
     isLogged(state, logged) {
       state.logged = logged;
