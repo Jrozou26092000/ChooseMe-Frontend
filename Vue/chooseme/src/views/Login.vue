@@ -33,7 +33,7 @@
                   </v-card-text>
                   <v-card-actions>
                   <v-spacer /> 
-                  <v-btn @click="onLogin" dark color="#102f85" class="mr-4 mb-4">Login</v-btn>
+                  <v-btn @click="onLogin" dark color="#102f85" class="mr-4 mb-4">Ingresar</v-btn>
                   </v-card-actions>
               </v-card>
            </v-row>
@@ -52,7 +52,7 @@
             v-bind="attrs"
             @click="redirectToSignIn"
           >
-            Close
+            Cerrar
           </v-btn>
         </template>
       </v-snackbar>

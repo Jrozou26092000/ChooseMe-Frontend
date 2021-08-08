@@ -76,7 +76,7 @@
                   </v-card-text>
                   <v-card-actions>
                   <v-spacer /> 
-                  <v-btn @click="onSignin" color="#102f85" :dark="isFormValid" class="mr-4 mb-4"  depressed :disabled="!isFormValid">Sign In</v-btn>
+                  <v-btn @click="onSignin" color="#102f85" :dark="isFormValid" class="mr-4 mb-4"  depressed :disabled="!isFormValid">Registrarse</v-btn>
                   </v-card-actions>
               </v-card>
            </v-row>
