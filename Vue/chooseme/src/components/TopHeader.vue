@@ -15,13 +15,6 @@
           @click.prevent="gotoHome"
         ></v-img>
       </router-link>
-      <!-- <img 
-        class="ml-5 mt-5" 
-        src="@/assets/Logo_chooseme2.png" 
-        height="70"
-        href="#" 
-        @click.prevent="gotoHome"
-      /> -->
 
       <v-spacer></v-spacer>
 
@@ -168,7 +161,6 @@ export default {
             }
           );
           this.$store.commit("setProductlist", response.data);
-          //console.log( this.$store.products);
         } catch (error) {
           console.log(error);
         }

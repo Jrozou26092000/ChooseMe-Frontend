@@ -64,7 +64,6 @@
 
           <v-card-text>
             <v-row class="mb-2" justify=center>
-              <!-- Crear review: -->
                 <v-dialog
                   v-model="dialog"
                   persistent
@@ -248,6 +247,7 @@
               <v-btn
               color="indigo darken-2"
               dark
+              :disabled = "review.impressions.length == 0"
               @click="ConsultaActualizaciones(review)"
               >
                   Consultar actualizaciones
@@ -451,7 +451,6 @@ export default {
             headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           }
         );
-        // console.log(response1);
         if (!response1.data) {
           this.message = "No puedes crear más de una review sobre el mismo producto";
           this.color = "red";
@@ -467,6 +466,15 @@ export default {
             );
             this.$store.commit("resetProduct_reviews", response.data);
             this.$store.commit("resetPage_product_reviews");
+          } catch (error) {
+            console.log(error);
+          }
+          try {
+            const response = await axios.get(
+              "http://localhost:8080/product/" + this.$store.state.current_product.product_id,
+              {}
+            );
+            this.$store.commit("setCurrent_product", response.data);
           } catch (error) {
             console.log(error);
           }

@@ -15,13 +15,6 @@
                     ></v-text-field>
                 </v-col>
                 <v-col>
-                   <!--  <v-sheet
-                        class="d-flex"
-                        color="#102f85"
-                        height="50"
-                        rounded
-                    >
-                    </v-sheet> -->
                 </v-col>
             </v-row>
             <v-row>
@@ -130,10 +123,8 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-            //this.reviewer_name = ""
         },
         async view_profile(reviewer){
-            // Obtener las reviews de un reviewer.
             try { 
                 const response = await axios.get(
                 "http://localhost:8080/user/review/" + reviewer.user_id + "/0",
@@ -158,7 +149,6 @@ export default {
                     "user_name": this.$store.state.reviewer_search
                 });
                 if (response.data.length == 0) {
-                    //No hay más resultados.
                     $state.complete();
                 } else {
                     this.$store.commit("addReviewersList", response.data);

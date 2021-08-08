@@ -138,6 +138,7 @@
                 <v-btn
                   color="indigo darken-2"
                   dark
+                  :disabled = "review.impressions.length == 0"
                   @click="ConsultaActualizaciones(review)"
                 >
                   Consultar actualizaciones
@@ -391,8 +392,8 @@
               id="delete-1"
               label="Contraseña:"
               label-for="delete-1"
-              description="Recordatorio: Una vez elimines tu cuenta no será posible recuperarla, tus datos se
-              borrarán de la aplicación y tus reviews y comentarios quedarán anónimos."
+              description="Recordatorio: Una vez elimines tu cuenta no será posible recuperarla, todos tus datos se
+              borrarán de la aplicación."
             >
               <b-form-input
                 id="delete-1"
@@ -590,8 +591,6 @@ export default {
         }
       );
       this.user = response.data;
-
-      //this.$store.state.tab = 'rulet';
     } catch (error) {
       console.log(error);
     }
@@ -600,8 +599,6 @@ export default {
     this.nombre_usuario = this.user.user_name;
     this.puntos = this.user.points;
     this.id = this.user.user_id;
-    // this.telefono = this.user.phone;
-    // this.correo = this.user.email;
 
     try {
         this.$store.commit("resetPage_reviews_user");
@@ -795,12 +792,10 @@ export default {
           }
         );
         if(response.data === true){
-          console.log("Eliminado correctamente");
           this.adErase = "Eliminado correctamente";
           this.snackbar = true;
           this.color = "success";
         }else{
-          console.log("No eliminado");
           this.adErase = "No pudo ser eliminado";
           this.snackbar = true;
           this.color = "error";
@@ -821,7 +816,7 @@ export default {
     async actualizarReview(review,index){
       this.reviewActualizacionId = review.comment_id;
       try {
-        const response = await axios.post(
+        await axios.post(
           "http://localhost:8080/review/update",
           {
             "impression":this.comment, "user_id":this.id, "comment_id":this.reviewActualizacionId
@@ -830,11 +825,6 @@ export default {
             headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           }
         );
-        if(response.data === "ok"){
-          console.log("Actualizado correctamente");
-        }else{
-          console.log("No actualizado");
-        }
       } catch (error) {
         console.log(error);
       } 

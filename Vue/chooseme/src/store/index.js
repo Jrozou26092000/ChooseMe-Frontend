@@ -32,6 +32,17 @@ export default new Vuex.Store({
   mutations: {
     setProductlist(state, products) {
       state.products = products;
+      state.products.sort(function(a,b){
+        if(a.name.toLowerCase().replace(/\s+/g, '')
+        > b.name.toLowerCase().replace(/\s+/g, '')){
+          return 1;
+        }
+        if(a.name.toLowerCase().replace(/\s+/g, '')
+        < b.name.toLowerCase().replace(/\s+/g, '')){
+          return -1;
+        }
+        return 0;
+      })
     },
     isLogged(state, logged) {
       state.logged = logged;
